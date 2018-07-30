@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Registrar Libro</title>
+
+    <% include ../partials/head %>
+
+</head>
+
+<body>
+
+    <% include ../partials/navbar-lateral %>
+
+    <div class="content-page-container full-reset custom-scroll-containers">
+
+        <% include ../partials/nav %>
+
+        <div class="container">
+            <div class="page-header">
+                <h1 class="all-tittles">Añadir libro</h1>
+            </div>
+        </div>
+        <div class="container-fluid" style="margin: 50px 0;">
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <img src="assets/img/flat-book.png" alt="pdf" class="img-responsive center-box" style="max-width: 110px;">
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
+                    Bienvenido a la sección para agregar nuevos libros a la biblioteca, deberas de llenar todos los campos para poder registrar
+                    el libro
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <form autocomplete="off">
+                <div class="container-flat-form">
+                    <div class="title-flat-form title-flat-blue">Nuevo libro</div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+                            <legend>
+                                <strong>Información básica</strong>
+                            </legend>
+                            <br>
+                            <div class="group-material">
+                                <input type="text" class="tooltips-general material-control" placeholder="Escribe aquí el código correlativo del libro" pattern="[0-9]{1,20}"
+                                    maxlength="20" data-toggle="tooltip" data-placement="top" title="Escribe el código correlativo del libro, solamente números" required>
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Código</label>
+                            </div>
+                            <div class="group-material">
+                                <input type="text" class="tooltips-general material-control" placeholder="Escribe aquí el ISBN " maxlength="70" data-toggle="tooltip"
+                                    data-placement="top" title="Escribe el ISBN del libro">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>ISBN</label>
+                            </div>
+                            <div class="group-material">
+                                <input type="text" class="tooltips-general material-control" placeholder="Escribe aquí el título o nombre del libro" required=""
+                                    maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el título o nombre del libro">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Título</label>
+                            </div>
+                            <div class="group-material">
+                                <input type="text" class="tooltips-general material-control" placeholder="Escribe aquí el autor del libro" maxlength="70"
+                                    data-toggle="tooltip" data-placement="top" title="Escribe el nombre del autor del libro">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Autor</label>
+                            </div>
+                            <div class="group-material">
+                                <input type="text" class="material-control tooltips-general" placeholder="Escribe aquí la editorial del libro"
+                                    maxlength="70" data-toggle="tooltip" data-placement="top" title="Editorial del libro">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Lugar: Editorial</label>
+                            </div>
+                            <div class="group-material">
+                                <input type="text" class="material-control tooltips-general" placeholder="Escribe aquí la editorial del libro"
+                                    maxlength="70" data-toggle="tooltip" data-placement="top" title="Editorial del libro">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Numero de páginas</label>
+                            </div>
+                            <div class="group-material">
+                                <span>Categoría</span>
+                                <select class="tooltips-general material-control" data-toggle="tooltip" data-placement="top" title="Elige la categoría del libro">
+                                    <option value="" disabled="" selected="">Selecciona una categoría</option>
+                                    <option value="categoria">Categoría</option>
+                                    <option value="categoria">Categoría</option>
+                                    <option value="categoria">Categoría</option>
+                                </select>
+                            </div>
+                            
+                            <p class="text-center">
+                                <button type="reset" class="btn btn-info" style="margin-right: 20px;">
+                                    <i class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <% include ../partials/modalhelp %>
+
+        <% include ../partials/footer %>
+
+    </div>
+</body>
+
+<% include ../partials/script %>
+
+</html>

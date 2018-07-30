@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Nuevo usuario</title>
+
+    <% include ../partials/head %>
+
+</head>
+
+<body>
+
+    <% include ../partials/navbar-lateral %>
+
+    <div class="content-page-container full-reset custom-scroll-containers">
+
+        <% include ../partials/nav %>
+
+        <div class="container">
+            <div class="page-header">
+                <h1 class="all-tittles">Administración Usuarios</h1>
+            </div>
+        </div>
+        <div class="container-fluid" style="margin: 50px 0;">
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <img src="assets/img/user03.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
+                    Bienvenido a la sección de registro de usuarios, para poder registrar un usuario nuevo deberás de llenar todos los
+                    campos del siguiente formulario
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 lead">
+                    <ol class="breadcrumb">
+                        <li class="active">Nuevo usuario</li>
+                        <li>
+                            <a href="liststudent.html">Listado de usuarios</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="container-flat-form">
+                <div class="title-flat-form title-flat-blue">Registrar un nuevo usuario</div>
+                <form autocomplete="off">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+                            <legend>Datos del usuario</legend>
+                            <br>
+                            <br>
+                            <div class="group-material">
+                                <span>Tipo de usuario</span>
+                                <select class="material-control tooltips-general" data-toggle="tooltip" data-placement="top" title="Elige el tipo de usuario" required>
+                                    <option value="" disabled="" selected="">Selecciona una opción</option>
+                                    <option value="usuario corriente">Usuario corriente</option>
+                                    <option value="administrador">Administrador</option>
+                                </select>
+                            </div>
+                            <div class="group-material">
+                                <input type="text" class="material-control tooltips-general" placeholder="Escribe aquí el documento del usuario" required="" maxlength="20"
+                                    data-toggle="tooltip" data-placement="top" title="Documento del usuario" pattern="[0-9]{8,15}">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Documento</label>
+                            </div>
+                            <div class="group-material">
+                                <input type="text" class="material-control tooltips-general" placeholder="Escribe aquí los nombres del alumno" required=""
+                                    pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,50}" maxlength="50" data-toggle="tooltip" data-placement="top"
+                                    title="Nombres del estudiante">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Nombres</label>
+                            </div>
+                            <div class="group-material">
+                                <input type="text" class="material-control tooltips-general" placeholder="Escribe aquí los apellidos del alumno" required=""
+                                    pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,50}" maxlength="50" data-toggle="tooltip" data-placement="top"
+                                    title="Apellidos del estudiante">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Apellidos</label>
+                            </div>
+                            <div class="group-material">
+                                <input type="text" class="material-control tooltips-general" placeholder="Teléfono"
+                                    data-toggle="tooltip" data-placement="top" title="Ingrese el teléfono">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Teléfono</label>
+                            </div>
+                            <div class="group-material">
+                                <input type="password" class="material-control tooltips-general" placeholder="Contraseña" required="" maxlength="8"
+                                    minlength="4" data-toggle="tooltip" data-placement="top" title="Máximo 8 números">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Contraseña de ingreso</label>
+                            </div>
+                            <p class="text-center">
+                                <button type="reset" class="btn btn-info" style="margin-right: 20px;">
+                                    <i class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
+                            </p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <% include ../partials/modalhelp %>
+
+        <% include ../partials/footer %>
+
+    </div>
+</body>
+
+<% include ../partials/script %>
+
+</html>
