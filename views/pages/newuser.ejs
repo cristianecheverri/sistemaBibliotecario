@@ -54,6 +54,14 @@
                             <br>
                             <br>
                             <div class="group-material">
+                                <span>Biblioteca</span>
+                                <select class="material-control tooltips-general" data-toggle="tooltip" data-placement="top" title="Elige la biblioteca" required>
+                                    <option value="" disabled="" selected="">Selecciona una opción</option>
+                                    <option value="usuario corriente">Biblioteca 1</option>
+                                    <option value="administrador">Biblioteca 2</option>
+                                </select>
+                            </div>
+                            <div class="group-material">
                                 <span>Tipo de usuario</span>
                                 <select class="material-control tooltips-general" data-toggle="tooltip" data-placement="top" title="Elige el tipo de usuario" required>
                                     <option value="" disabled="" selected="">Selecciona una opción</option>
@@ -92,11 +100,25 @@
                                 <label>Teléfono</label>
                             </div>
                             <div class="group-material">
+                                <input type="email" class="material-control tooltips-general" placeholder="Correo"
+                                    data-toggle="tooltip" data-placement="top" title="Ingrese el Correo">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Correo</label>
+                            </div>
+                            <div class="group-material">
                                 <input type="password" class="material-control tooltips-general" placeholder="Contraseña" required="" maxlength="8"
-                                    minlength="4" data-toggle="tooltip" data-placement="top" title="Máximo 8 números">
+                                    minlength="4" data-toggle="tooltip" data-placement="top" title="Mínimo 4 números - máximo 8 números">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Contraseña de ingreso</label>
+                            </div>
+                            <div class="group-material">
+                                <input type="password" class="material-control tooltips-general" placeholder="Contraseña" required="" maxlength="8"
+                                    minlength="4" data-toggle="tooltip" data-placement="top" title="Mínimo 4 caracteres - máximo 8 caracteres">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Confirmar contraseña</label>
                             </div>
                             <p class="text-center">
                                 <button type="reset" class="btn btn-info" style="margin-right: 20px;">

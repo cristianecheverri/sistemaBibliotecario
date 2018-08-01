@@ -104,7 +104,7 @@ span.label-mhover{
     margin: 0;
 }
 .navbar-user-top > ul > li{
-    display: inline-block;
+    /* display: inline-block; */
     float: right;
     color: rgba(255,255,255,.4);
     height: 55px;

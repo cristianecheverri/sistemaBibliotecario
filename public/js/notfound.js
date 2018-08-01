@@ -108,6 +108,3 @@ var particles = {
     },
     "retina_detect": true
 };
-particlesJS('particles-js', particles, function () {
-    console.log('callback - particles.js config loaded');
-});
