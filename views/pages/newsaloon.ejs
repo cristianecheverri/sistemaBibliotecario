@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Nueva sala</title>
+
+    <% include ../partials/head %>
+
+</head>
+
+<body>
+
+    <% include ../partials/navbar-lateral %>
+
+
+    <div class="content-page-container full-reset custom-scroll-containers">
+
+        <% include ../partials/nav %>
+
+        <div class="container">
+            <div class="page-header">
+                <h1 class="all-tittles">Agregar nueva sala</h1>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <ul class="nav nav-tabs nav-justified" style="font-size: 17px;">
+                <li role="presentation">
+                    <a href="institution">Bibliotecas</a>
+                </li>
+                <li role="presentation" class="active">
+                    <a>Salas</a>
+                </li>
+                <li role="presentation">
+                    <a href="category">Categorías</a>
+                </li>
+                <li role="presentation">
+                    <a href="section">Secciones / Estantes</a>
+                </li>
+            </ul>
+        </div>
+        <div class="container-fluid" style="margin: 50px 0;">
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <img src="assets/img/institution.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
+                    Aquí puedes agregar nuevas salas. Puedes eliminar una sala si se removieron los estantes de ésta.
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 lead">
+                    <ol class="breadcrumb">
+                      <li><a href="saloon">Salas</a></li>
+                      <li class="active">Nueva sala</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="container-flat-form">
+                <div class="title-flat-form title-flat-blue">Guardar datos de la sala</div>
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+                            <div class="group-material">
+                                <input type="text" class="material-control tooltips-general" placeholder="Código de sala" required="" pattern="[0-9]{1,10}"
+                                    maxlength="10" data-toggle="tooltip" data-placement="top" title="Solo números, máximo 10 caracteres">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Código</label>
+                            </div>
+                            <div class="group-material">
+                                <input type="text" class="material-control tooltips-general" placeholder="Nombre de la institución" required="" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{1,255}"
+                                    maxlength="255" data-toggle="tooltip" data-placement="top" title="Escribe el nombre de la sala">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Nombre de la sala</label>
+                            </div>
+                            <div class="group-material">
+                                <input type="text" class="material-control tooltips-general" placeholder="Código de la institución" pattern="{1,255}"
+                                    maxlength="255" data-toggle="tooltip" data-placement="top" title="Escriba el código de la institución">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Biblioteca</label>
+                            </div>
+                            <p class="text-center">
+                                <button type="reset" class="btn btn-info" style="margin-right: 20px;">
+                                    <i class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
+                            </p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <% include ../partials/modalhelp %>
+
+        <% include ../partials/footer %>
+    </div>
+</body>
+
+<% include ../partials/script %>
+
+</html>

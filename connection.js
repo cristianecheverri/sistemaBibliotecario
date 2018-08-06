@@ -57,17 +57,17 @@ Libro.belongsToMany(Usuario, { foreignKey: 'fk_usuario', through: Transaccion, u
 Usuario.belongsToMany(Libro, { foreignKey: 'fk_libro', through: Transaccion, unique: false });
 
 
-sequelize.sync({ force: true }).then(() => {
-    console.log('\n¡Database and tables created!');
-});
+// sequelize.sync({ force: false }).then(() => {
+//     console.log('\n¡Database and tables created!');
+// });
 
-module.exports = {
-    Biblioteca,
-    Sala,
-    Estante,
-    Categoria,
-    Autor,
-    Libro,
-    Usuario,
-    Transaccion
-}
+// module.exports = {
+//     Biblioteca,
+//     Sala,
+//     Estante,
+//     Categoria,
+//     Autor,
+//     Libro,
+//     Usuario,
+//     Transaccion
+// }

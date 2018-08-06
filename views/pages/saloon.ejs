@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Salas</title>
+    <link rel="stylesheet" href="css/institution.css">
+
+    <% include ../partials/head %>
+
+</head>
+
+<body>
+
+    <% include ../partials/navbar-lateral %>
+
+
+    <div class="content-page-container full-reset custom-scroll-containers">
+
+        <% include ../partials/nav %>
+
+        <div class="container">
+            <div class="page-header">
+                <h1 class="all-tittles">Salas</h1>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <ul class="nav nav-tabs nav-justified" style="font-size: 17px;">
+                <li role="presentation">
+                    <a href="institution">Bibliotecas</a>
+                </li>
+                <li role="presentation" class="active">
+                    <a>Salas</a>
+                </li>
+                <li role="presentation">
+                    <a href="category">Categorías</a>
+                </li>
+                <li role="presentation">
+                    <a href="section">Secciones / Estantes</a>
+                </li>
+            </ul>
+        </div>
+        <div class="container-fluid" style="margin: 50px 0;">
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <img src="assets/img/institution.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
+                    Aquí puedes ver las salas que tienes registradas. Puedes añadir nuevas salas en el botón <strong>Nueva sala</strong>
+                </div>
+
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 lead">
+                    <ol class="breadcrumb">
+                      <li class="active">Salas</li>
+                      <li><a href="newsaloon">Nueva sala</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <h2 class="text-center all-tittles">Listado de Salas</h2>
+            <div class="table-responsive">
+                <div class="div-table" style="margin:0 !important;">
+                    <div class="div-table-row div-table-row-list" style="background-color:#DFF0D8; font-weight:bold;">
+                        <div class="div-table-cell" style="width: 6%;">Id</div>
+                        <div class="div-table-cell" style="width: 32%;">Nombre</div>
+                        <div class="div-table-cell" style="width: 32%;">Biblioteca</div>
+                        <div class="div-table-cell" style="width: 8%;">Eliminar</div>
+                        <div class="div-table-cell" style="width: 8%;">Ver Ficha</div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <div class="div-table" style="margin:0 !important;">
+                    <div class="div-table-row div-table-row-list">
+                        <div class="div-table-cell" style="width: 6%;">Id</div>
+                        <div class="div-table-cell" style="width: 32%;">Nombre</div>
+                        <div class="div-table-cell" style="width: 32%;">Biblioteca</div>
+                        <div class="div-table-cell" style="width: 8%;">
+                            <button class="btn btn-danger"><i class="zmdi zmdi-delete"></i></button>
+                        </div>
+                        <div class="div-table-cell" style="width: 8%;">
+                            <button class="btn btn-info"><i class="zmdi zmdi-file-text"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <div class="div-table" style="margin:0 !important;">
+                    <div class="div-table-row div-table-row-list">
+                        <div class="div-table-cell" style="width: 6%;">Id</div>
+                        <div class="div-table-cell" style="width: 32%;">Nombre</div>
+                        <div class="div-table-cell" style="width: 32%;">Biblioteca</div>
+                        <div class="div-table-cell" style="width: 8%;">
+                            <button class="btn btn-danger"><i class="zmdi zmdi-delete"></i></button>
+                        </div>
+                        <div class="div-table-cell" style="width: 8%;">
+                            <button class="btn btn-info"><i class="zmdi zmdi-file-text"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <div class="div-table" style="margin:0 !important;">
+                    <div class="div-table-row div-table-row-list">
+                        <div class="div-table-cell" style="width: 6%;">Id</div>
+                        <div class="div-table-cell" style="width: 32%;">Nombre</div>
+                        <div class="div-table-cell" style="width: 32%;">Biblioteca</div>
+                        <div class="div-table-cell" style="width: 8%;">
+                            <button class="btn btn-danger"><i class="zmdi zmdi-delete"></i></button>
+                        </div>
+                        <div class="div-table-cell" style="width: 8%;">
+                            <button class="btn btn-info"><i class="zmdi zmdi-file-text"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <div class="div-table" style="margin:0 !important;">
+                    <div class="div-table-row div-table-row-list">
+                        <div class="div-table-cell" style="width: 6%;">Id</div>
+                        <div class="div-table-cell" style="width: 32%;">Nombre</div>
+                        <div class="div-table-cell" style="width: 32%;">Biblioteca</div>
+                        <div class="div-table-cell" style="width: 8%;">
+                            <button class="btn btn-danger"><i class="zmdi zmdi-delete"></i></button>
+                        </div>
+                        <div class="div-table-cell" style="width: 8%;">
+                            <button class="btn btn-info"><i class="zmdi zmdi-file-text"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <div class="div-table" style="margin:0 !important;">
+                    <div class="div-table-row div-table-row-list">
+                        <div class="div-table-cell" style="width: 6%;">Id</div>
+                        <div class="div-table-cell" style="width: 32%;">Nombre</div>
+                        <div class="div-table-cell" style="width: 32%;">Biblioteca</div>
+                        <div class="div-table-cell" style="width: 8%;">
+                            <button class="btn btn-danger"><i class="zmdi zmdi-delete"></i></button>
+                        </div>
+                        <div class="div-table-cell" style="width: 8%;">
+                            <button class="btn btn-info"><i class="zmdi zmdi-file-text"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <% include ../partials/modalhelp %>
+
+        <% include ../partials/footer %>
+    </div>
+</body>
+
+<% include ../partials/script %>
+
+</html>
