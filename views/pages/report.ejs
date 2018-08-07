@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Estadisticas</title>
+    <link rel="stylesheet" href="css/institution.css">
+
+    <% include ../partials/head %>
+
+</head>
+
+<body>
+
+    <% include ../partials/navbar-lateral %>
+
+
+    <div class="content-page-container full-reset custom-scroll-containers">
+
+        <% include ../partials/nav %>
+
+        <div class="container">
+            <div class="page-header">
+              <h1 class="all-tittles">Reportes y estadísticas</h1>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+                <li role="presentation" class="active"><a href="#statistics" aria-controls="statistics" role="tab" data-toggle="tab">Estadísticas</a></li>
+                <li role="presentation"><a href="#reports" aria-controls="reports" role="tab" data-toggle="tab">Reportes</a></li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active" id="statistics">
+                    <div class="container-fluid"  style="margin: 50px 0;">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                <img src="assets/img/chart.png" alt="chart" class="img-responsive center-box" style="max-width: 120px;">
+                            </div>
+                            <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
+                                Bienvenido al área de estadísticas, aquí puedes ver las diferentes estadísticas de los préstamos y libros.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="page-header">
+                          <h2 class="all-tittles">préstamos <small>en general</small></h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h3 class="text-center all-tittles">total préstamos del año</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-center">
+                                        <thead>
+                                            <tr class="success">
+                                                <th class="text-center">N. Préstamos</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr class="info">
+                                                <th class="text-center">0</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="page-header">
+                          <h2 class="all-tittles">Libros más leídos</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h3 class="text-center all-tittles">libros más leídos</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-center">
+                                        <thead>
+                                            <tr class="success">
+                                                <th class="text-center">Libro</th>
+                                                <th class="text-center">Autor</th>
+                                                <th class="text-center">N. Préstamos</th>
+                                                <th class="text-center">Porcentaje</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Harry Potter</td>
+                                                <td>J. K. Rowling</td>
+                                                <td>2</td>
+                                                <td>0%</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="page-header">
+                          <h2 class="all-tittles">Usuarios más activos</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h3 class="text-center all-tittles">usuarios más activos del año</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-center">
+                                        <thead>
+                                            <tr class="success">
+                                                <th class="text-center">Usuario</th>
+                                                <th class="text-center">Total libros</th>
+                                                <th class="text-center">Porcentaje</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Nombre</td>
+                                                <td>0</td>
+                                                <td>0%</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="reports">
+                    <div class="container-fluid"  style="margin: 50px 0;">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                <img src="assets/img/user-sesion.png" alt="pdf" class="img-responsive center-box" style="max-width: 120px;">
+                            </div>
+                            <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
+                                Bienvenido al área de reportes, aquí puedes generar reportes de inventario entre otros.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="page-header">
+                              <h2 class="all-tittles">reportes <small>generales</small></h2>
+                            </div><br>
+                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                <div class="full-reset report-content">
+                                    <p class="text-center">
+                                        <i class="zmdi zmdi-trending-up zmdi-hc-5x"></i>
+                                    </p>
+                                    <h3 class="text-center">Reporte General de Inventario</h3>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                <div class="full-reset report-content">
+                                    <p class="text-center">
+                                        <i class="zmdi zmdi-trending-up zmdi-hc-5x"></i>
+                                    </p>
+                                    <h3 class="text-center">Reporte Libros por Categoría</h3>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                <div class="full-reset report-content">
+                                    <p class="text-center">
+                                        <i class="zmdi zmdi-trending-up zmdi-hc-5x"></i>
+                                    </p>
+                                    <h3 class="text-center">Préstamos entregados (por usuarios)</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <% include ../partials/modalhelp %>
+
+        <% include ../partials/footer %>
+    </div>
+</body>
+
+<% include ../partials/script %>
+
+</html>
