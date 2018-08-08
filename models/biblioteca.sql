@@ -25,7 +25,7 @@ create table categoria (
 	nombre varchar(50)
 );
 
-create table estante-categoria(
+create table estante_categoria(
 	id_estante_categoria integer primary key NOT NULL,
 	fk_estante integer NOT NULL,
 	fk_categoria integer NOT NULL,
@@ -36,7 +36,7 @@ create table estante-categoria(
 create table autor (
 	id_autor integer primary key NOT NULL,
 	nombre varchar(50) NOT NULL,
-	fechaNac-Muer integer,
+	fechaNac_Muer integer,
 	nacionalidad varchar(50)
 );
 
@@ -45,7 +45,7 @@ create table libro (
 	isbn varchar(20),
 	nombre varchar(75) NOT NULL,
 	lugar_editorial varchar(100),
-	fk_autor varchar(50),
+	fk_autor integer,
 	num_pag varchar(10),
 	fk_categoria integer NOT NULL,
 	foreign key (fk_autor) references autor(id_autor),
@@ -69,5 +69,3 @@ create table transaccion (
 	foreign key (fk_libro) references libro(id_libro),
 	foreign key (fk_usuario) references usuario(id_usuario)
 );
-
-

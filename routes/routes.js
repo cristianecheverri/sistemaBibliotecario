@@ -5,8 +5,9 @@ module.exports = function (app) {
     });
 
     // app.post('/', function (req, res) {
-    //     req.session.nombre = req.body.nombre;
-    //     res.redirect('home'); //Show login
+    //     //req.session.nombre = req.body.nombre;
+    //     //res.redirect('home'); //Show login
+    //     res.send('post')
     // });
 
     app.get('/home', function (req, res) {
