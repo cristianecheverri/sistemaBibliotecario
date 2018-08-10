@@ -4,7 +4,6 @@
 // ===================================================================================
 var express = require('express'); //charges the express' module
 var path = require('path');
-var routes = require('./routes/routes.js');
 var app = express(); //contains express' module
 // ===================================================================================
 // setup our express application
@@ -14,11 +13,7 @@ app.use(express.static(path.join(__dirname, './public'))); //charge the static r
 app.set('view engine', 'ejs'); // set ejs like view engine
 app.set('views', path.join(__dirname, './views/pages')); //charge the route of views
 // ===================================================================================
-// setup routes
-// ===================================================================================
-routes(app); //render the correct route
-// ===================================================================================
 // start our server
 // ===================================================================================
-var server = require('./server');
-server.iniciar(app); 
+var server = require('./server'); //requires our server
+server.start(app); //inicialize our server 

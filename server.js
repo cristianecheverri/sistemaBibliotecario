@@ -1,8 +1,10 @@
-function iniciar(app) {
+var routes = require('./routes/routes.js');
+
+function start(app) {
     var server = app.listen(app.get('port'), function () {
         console.log('Server listening on port ' + server.address().port);
-        const { Biblioteca, Sala, Estante, Categoria, Autor, Libro, Usuario, Transaccion } = require('./connection');
+        routes(app); //render the correct route
     });
 }
 
-exports.iniciar = iniciar;
+exports.start = start;
