@@ -1,20 +1,20 @@
-$(document).ready(function(){
+$(document).ready(function () {
     $('.tooltips-general').tooltip('hide');
-    $('.mobile-menu-button').on('click', function(){
-        var mobileMenu=$('.navbar-lateral');	
-        if(mobileMenu.css('display')=='none'){
+    $('.mobile-menu-button').on('click', function () {
+        var mobileMenu = $('.navbar-lateral');
+        if (mobileMenu.css('display') == 'none') {
             mobileMenu.fadeIn(300);
-        }else{
+        } else {
             mobileMenu.fadeOut(300);
         }
     });
-    $('.dropdown-menu-button').on('click', function(){
-        var dropMenu=$(this).next('ul');
+    $('.dropdown-menu-button').on('click', function () {
+        var dropMenu = $(this).next('ul');
         dropMenu.slideToggle('slow');
     });
-    $('.exit-system-button').on('click', function(e){
+    $('.exit-system-button').on('click', function (e) {
         e.preventDefault();
-        var LinkExitSystem=$(this).attr("data-href");
+        var LinkExitSystem = $(this).attr("data-href");
         swal({
             title: "¿Estás seguro?",
             text: "Quieres salir del sistema y cerrar la sesión actual",
@@ -24,49 +24,52 @@ $(document).ready(function(){
             confirmButtonText: "Si, salir",
             cancelButtonText: "No, cancelar",
             animation: "slide-from-top",
-            closeOnConfirm: false 
-        },function(){
-            window.location=LinkExitSystem; 
-        });  
+            closeOnConfirm: false
+        }, function () {
+            window.location = LinkExitSystem;
+        });
     });
-    $('.search-book-button').click(function(e){
+    $('.search-book-button').click(function (e) {
         e.preventDefault();
-        var LinkSearchBook=$(this).attr("data-href");
-        swal({
-           title: "¿Qué libro estás buscando?",
-           text: "Por favor escribe el nombre del libro",
-           type: "input",   
-           showCancelButton: true,
-           closeOnConfirm: false,
-           animation: "slide-from-top",
-           cancelButtonText: "Cancelar",
-           confirmButtonText: "Buscar",
-           confirmButtonColor: "#3598D9",
-           inputPlaceholder: "Escribe aquí el nombre de libro" }, 
-      function(inputValue){
-           if (inputValue === false) return false;  
+        var LinkSearchBook = $(this).attr("data-href");
+        // swal({
+        //     title: "¿Qué libro estás buscando?",
+        //     text: "Por favor escribe el nombre del libro",
+        //     type: "input",
+        //     showCancelButton: true,
+        //     closeOnConfirm: false,
+        //     animation: "slide-from-top",
+        //     cancelButtonText: "Cancelar",
+        //     confirmButtonText: "Buscar",
+        //     confirmButtonColor: "#3598D9",
+        //     inputPlaceholder: "Escribe aquí el nombre de libro"
+        // },
+        //     function (inputValue) {
+        //         if (inputValue === false) return false;
 
-           if (inputValue === "") {
-               swal.showInputError("Debes escribir el nombre del libro");     
-               return false;   
-           } 
-            window.location=LinkSearchBook+"?bookName="+inputValue;
-       });
+        //         if (inputValue === "") {
+        //             swal.showInputError("Debes escribir el nombre del libro");
+        //             return false;
+        //         }
+        //         window.location = LinkSearchBook + "?bookName=" + inputValue;
+        //     });
+        window.location = LinkSearchBook; 
+        
     });
-    $('.btn-help').on('click', function(){
+    $('.btn-help').on('click', function () {
         $('#ModalHelp').modal({
             show: true,
             backdrop: "static"
         });
     });
 });
-(function($){
-    $(window).load(function(){
+(function ($) {
+    $(window).load(function () {
         $(".custom-scroll-containers").mCustomScrollbar({
-            theme:"dark-thin",
+            theme: "dark-thin",
             scrollbarPosition: "inside",
             autoHideScrollbar: true,
-            scrollButtons:{ enable: true }
+            scrollButtons: { enable: true }
         });
     });
 })(jQuery);

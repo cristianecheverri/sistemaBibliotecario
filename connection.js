@@ -92,9 +92,9 @@ module.exports = {
 //     telefono: '3216547890'
 // });
 
-Libro.create({
-    nombre: 'Harry potter y la piedra filosofal'
-})
+// Libro.create({
+//     nombre: 'Harry potter y la piedra filosofal'
+// })
 
 /*
 Biblioteca.update({

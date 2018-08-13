@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Resultados de la búsqueda</title>
+
+    <% include ../partials/head %>
+
+</head>
+
+<body>
+
+    <% include ../partials/navbar-lateral %>
+
+
+    <div class="content-page-container full-reset custom-scroll-containers">
+
+        <% include ../partials/nav %>
+
+        <div class="container">
+            <div class="page-header">
+              <h1 class="all-tittles">Búsqueda de libros</h1>
+            </div>
+        </div>
+        <br>
+        <div class="container text-center">
+            <div class="row ">
+                <div class="col-md-8 col-sm-12">
+                    <input type="text" class="material-control" placeholder="Escribe aquí el título o nombre del libro" required=""
+                        maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el título o nombre del libro">
+                        <br>
+                </div>
+                
+                <div class="col-md-4 col-sm-12"><br>
+                    <button type="submit" class="btn btn-primary btn-lg" style="width: 55%;"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Buscar</button>
+                </div>
+                
+            </div>
+        </div>
+        <div>
+            <br><br><br>
+
+            
+            <%- html %>
+            
+
+        </div>
+
+        <% include ../partials/modalhelp %>
+
+        <% include ../partials/footer %>
+    </div>
+</body>
+
+<% include ../partials/script %>
+
+</html>

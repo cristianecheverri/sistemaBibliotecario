@@ -1,4 +1,5 @@
 'use strict';
+var functions = require('./functions');
 const { Biblioteca, Sala, Estante, Categoria, Autor, Libro, Usuario, Transaccion } = require('../connection');
 
 module.exports = function (app) {
@@ -14,9 +15,7 @@ module.exports = function (app) {
     // });
 
     app.get('/home', function (req, res) {
-        Libro.findAll().then(function (book) {
-            res.render('home', { cantidad_libros: book.length }); //Show home
-        });
+        functions.startHome(res);
     });
 
     app.get('/newbook', function (req, res) {
@@ -60,9 +59,7 @@ module.exports = function (app) {
     });
 
     app.get('/catalog', function (req, res) {
-        Libro.findAll({ where: { id_libro: 5 } }).then(function (book) {
-            res.render('catalog', { libro: book[0].nombre }); //Show all the added books
-        });
+        functions.listBooks(res);
     });
 
     app.get('/loan', function (req, res) {
@@ -83,6 +80,11 @@ module.exports = function (app) {
 
     app.get('/settings', function (req, res) {
         res.render('settings'); //Lets change some options of the system
+    });
+
+    app.get('/search', function (req, res) {
+        functions.searchBook(res);
+        //res.render('search'); //Show the results for the search of books
     });
 
     app.use(function (req, res, next) {
