@@ -32,29 +32,24 @@ $(document).ready(function () {
     $('.search-book-button').click(function (e) {
         e.preventDefault();
         var LinkSearchBook = $(this).attr("data-href");
-        // swal({
-        //     title: "¿Qué libro estás buscando?",
-        //     text: "Por favor escribe el nombre del libro",
-        //     type: "input",
-        //     showCancelButton: true,
-        //     closeOnConfirm: false,
-        //     animation: "slide-from-top",
-        //     cancelButtonText: "Cancelar",
-        //     confirmButtonText: "Buscar",
-        //     confirmButtonColor: "#3598D9",
-        //     inputPlaceholder: "Escribe aquí el nombre de libro"
-        // },
-        //     function (inputValue) {
-        //         if (inputValue === false) return false;
+        window.location = LinkSearchBook;
+    });
+    $('.btn-buscar-libro').click(function (e) {
+        e.preventDefault();
 
-        //         if (inputValue === "") {
-        //             swal.showInputError("Debes escribir el nombre del libro");
-        //             return false;
-        //         }
-        //         window.location = LinkSearchBook + "?bookName=" + inputValue;
-        //     });
-        window.location = LinkSearchBook; 
-        
+        var dataLibro = {};
+        dataLibro.nombreLibro = $('#input-buscar-libro').val();
+
+        $.ajax({
+            type: 'POST',
+            data: JSON.stringify(dataLibro),
+            contentType: 'application/json',
+            url: 'http://localhost:4001/search',
+            success: function (data) {
+                $("#search").html(data);
+            },
+
+        });
     });
     $('.btn-help').on('click', function () {
         $('#ModalHelp').modal({

@@ -5,9 +5,12 @@
 var express = require('express'); //charges the express' module
 var path = require('path');
 var app = express(); //contains express' module
+var bodyParser = require('body-parser');
 // ===================================================================================
 // setup our express application
 // ===================================================================================
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.set('port', process.env.PORT || 4001); //set the port for the server
 app.use(express.static(path.join(__dirname, './public'))); //charge the static resources
 app.set('view engine', 'ejs'); // set ejs like view engine

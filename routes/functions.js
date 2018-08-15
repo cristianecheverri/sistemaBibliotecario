@@ -53,8 +53,6 @@ function listBooks(res) {
     var html = '';
     var libro;
     var autor;
-    var nombreLibro;
-    var nombreAutor;
     var i, j;
 
     Libro.findAll().then(function (book) {
@@ -108,27 +106,51 @@ function listBooks(res) {
     });
 }
 
-function searchBook(res) {
-    var htmlLibrosBusqueda = '';
+function searchBook(res, libroABuscar, id) {
+    var htmlLibrosBusqueda = '<h3 class="text-center all-tittles">resultados de la búsqueda</h3>';
     var librosEncontrados;
+    var autores;
     Libro.findAll({
         where: {
             nombre: {
-                [Op.iLike]: '%lol%'
+                [Op.iLike]: `%${libroABuscar}%`
             }
         }
     }).then(function (books) {
         librosEncontrados = books;
-        if (librosEncontrados.length > 0) {
-            for (let i = 0; i < librosEncontrados.length; i++) {
-                htmlLibrosBusqueda += `<h2>${librosEncontrados[i].nombre}</h2>`;
+        Autor.findAll().then(function (author) {
+            autores = author;
+            if (librosEncontrados.length > 0) {
+                for (let i = 0; i < librosEncontrados.length; i++) {
+                    for (let j = 0; j < autores.length; j++) {
+                        if (librosEncontrados[i].fk_autor == autores[j].id_autor) {
+                            htmlLibrosBusqueda +=
+                                `<div class="media media-hover">
+                            <div class="media-left media-middle">
+                                <a href="#!" class="tooltips-general" data-toggle="tooltip" data-placement="right" title="Más información del libro">
+                                    <img class="media-object" src="assets/img/book.png" alt="Libro" width="48" height="48">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">${i + 1} - ${librosEncontrados[i].nombre}</h4>
+                                <div class="pull-left">
+                                    <strong>${autores[j].nombre}</strong><br>
+                                </div>
+                                <p class="text-center pull-right">
+                                    <a href="" class="btn btn-info btn-xs" style="margin-right: 10px;" id="${librosEncontrados[i].id_libro}"><i class="zmdi zmdi-info-outline"></i> &nbsp;&nbsp; Más información</a>
+                                </p>
+                            </div>
+                        </div>`;
+                        }
+                    }
+                }
+            } else {
+                htmlLibrosBusqueda += `<h2 class="text-center"><i class="zmdi zmdi-mood-bad zmdi-hc-5x"></i><br><br>Lo sentimos, no hemos encontrado ningún libro con el nombre <strong>ingresado</strong> en el sistema</h2>`
             }
-            res.render('search', { html: htmlLibrosBusqueda });
-        } else {
-            htmlLibrosBusqueda = `<h3 class="text-center all-tittles">resultados de la búsqueda</h3>
-            <h2 class="text-center"><i class="zmdi zmdi-mood-bad zmdi-hc-5x"></i><br><br>Lo sentimos, no hemos encontrado ningún libro con el nombre <strong>ingresado</strong> en el sistema</h2>`
-            res.render('search', { html: htmlLibrosBusqueda });
-        }
+
+            res.send(htmlLibrosBusqueda);
+
+        });
     });
 }
 

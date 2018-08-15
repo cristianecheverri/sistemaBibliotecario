@@ -27,21 +27,21 @@
             <div class="row ">
                 <div class="col-md-8 col-sm-12">
                     <input type="text" class="material-control" placeholder="Escribe aquí el título o nombre del libro" required=""
-                        maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el título o nombre del libro">
+                        maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el título o nombre del libro" id="input-buscar-libro">
                         <br>
                 </div>
                 
                 <div class="col-md-4 col-sm-12"><br>
-                    <button type="submit" class="btn btn-primary btn-lg" style="width: 55%;"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Buscar</button>
+                    <button class="btn btn-primary btn-lg btn-buscar-libro" style="width: 55%;" id=""><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Buscar</button>
                 </div>
                 
             </div>
         </div>
-        <div>
-            <br><br><br>
+        <div class="container-fluid" id="search">
+            <br>
 
             
-            <%- html %>
+           
             
 
         </div>

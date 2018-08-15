@@ -83,8 +83,13 @@ module.exports = function (app) {
     });
 
     app.get('/search', function (req, res) {
-        functions.searchBook(res);
-        //res.render('search'); //Show the results for the search of books
+        res.render('search');
+    });
+
+    app.post('/search', function (req, res) {
+        var nombreLibro = req.body.nombreLibro;
+        console.log(nombreLibro);
+        functions.searchBook(res, nombreLibro);
     });
 
     app.use(function (req, res, next) {
