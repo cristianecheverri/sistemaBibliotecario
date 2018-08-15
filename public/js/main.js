@@ -51,6 +51,38 @@ $(document).ready(function () {
 
         });
     });
+
+
+    $('.btn-agregar-libro').click(function (e) {
+        e.preventDefault();
+
+        var agregarLibro = {};
+        agregarLibro.id_libro = $('#input-agregar-libro-id').val();
+        agregarLibro.isbn = $('#input-agregar-libro-isbn').val();
+        agregarLibro.nombre = $('#input-agregar-libro-nombre').val();
+        agregarLibro.lugar = $('#input-agregar-libro-lugar').val();
+        agregarLibro.editorial = $('#input-agregar-libro-editorial').val();
+        agregarLibro.numero_paginas = $('#input-agregar-libro-numero-paginas').val();
+        agregarLibro.fk_autor = $('#input-agregar-libro-autor').val();
+        agregarLibro.fk_estante_categoria = $('#input-agregar-libro-estante-categoria').val();
+
+        $.ajax({
+            type: 'POST',
+            data: JSON.stringify(agregarLibro),
+            contentType: 'application/json',
+            url: 'http://localhost:4001/newbook',
+            success: function (data) {
+                alert(data)
+                //$("#search").html(data);
+            },
+
+        });
+    });
+
+
+
+
+
     $('.btn-help').on('click', function () {
         $('#ModalHelp').modal({
             show: true,

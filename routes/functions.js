@@ -1,4 +1,4 @@
-const { Biblioteca, Sala, Estante, Categoria, Autor, Libro, Usuario, Transaccion } = require('../connection');
+const { Biblioteca, Sala, Estante, Categoria, Estante_Categoria, Autor, Libro, Usuario, Transaccion } = require('../connection');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
@@ -75,7 +75,7 @@ function listBooks(res) {
                                     <strong>${author[j].nombre}</strong><br>
                                 </div>
                                 <p class="text-center pull-right">
-                                    <a href="#!" class="btn btn-info btn-xs" style="margin-right: 10px;"><i class="zmdi zmdi-info-outline"></i> &nbsp;&nbsp; Más información</a>
+                                    <a href="" id="${libro[i].id_libro}" class="btn btn-info btn-xs" style="margin-right: 10px;"><i class="zmdi zmdi-info-outline"></i> &nbsp;&nbsp; Más información</a>
                                 </p>
                             </div>
                         </div>`
@@ -83,7 +83,7 @@ function listBooks(res) {
                         html +=
                             `<div class="media media-hover">
                             <div class="media-left media-middle">
-                                <a href="#!" class="tooltips-general" data-toggle="tooltip" data-placement="right" title="Más información del libro">
+                                <a href="" class="tooltips-general" data-toggle="tooltip" data-placement="right" title="Más información del libro">
                                     <img class="media-object" src="assets/img/book.png" alt="Libro" width="48" height="48">
                                 </a>
                             </div>
@@ -93,7 +93,7 @@ function listBooks(res) {
                                 <strong>Anónimo</strong><br>
                                 </div>
                                 <p class="text-center pull-right">
-                                    <a href="#!" class="btn btn-info btn-xs btn-libro" style="margin-right: 10px;" id="${libro[i].id_libro}"><i class="zmdi zmdi-info-outline"></i> &nbsp;&nbsp; Más información</a>
+                                    <a href="" class="btn btn-info btn-xs btn-libro" style="margin-right: 10px;" id="${libro[i].id_libro}"><i class="zmdi zmdi-info-outline"></i> &nbsp;&nbsp; Más información</a>
                                 </p>
                             </div>
                         </div>`
@@ -127,7 +127,7 @@ function searchBook(res, libroABuscar, id) {
                             htmlLibrosBusqueda +=
                                 `<div class="media media-hover">
                             <div class="media-left media-middle">
-                                <a href="#!" class="tooltips-general" data-toggle="tooltip" data-placement="right" title="Más información del libro">
+                                <a href="" class="tooltips-general" data-toggle="tooltip" data-placement="right" title="Más información del libro">
                                     <img class="media-object" src="assets/img/book.png" alt="Libro" width="48" height="48">
                                 </a>
                             </div>
@@ -137,7 +137,7 @@ function searchBook(res, libroABuscar, id) {
                                     <strong>${autores[j].nombre}</strong><br>
                                 </div>
                                 <p class="text-center pull-right">
-                                    <a href="" class="btn btn-info btn-xs" style="margin-right: 10px;" id="${librosEncontrados[i].id_libro}"><i class="zmdi zmdi-info-outline"></i> &nbsp;&nbsp; Más información</a>
+                                    <a href="" id="${librosEncontrados[i].id_libro}" class="btn btn-info btn-xs button-information" style="margin-right: 10px;"><i class="zmdi zmdi-info-outline"></i> &nbsp;&nbsp; Más información</a>
                                 </p>
                             </div>
                         </div>`;
@@ -154,6 +154,70 @@ function searchBook(res, libroABuscar, id) {
     });
 }
 
+
+function cargarAgregarLibro(res) {
+    var autores;
+    var estante_categoria;
+    var estantes;
+    var categorias;
+    var htmlAutor = '';
+    var htmlEstanteCategoria = '';
+
+    Autor.findAll({order:['id_autor']}).then(function (author) {
+        autores = author;
+        Estante_Categoria.findAll().then(function (estantes_categorias) {
+            estante_categoria = estantes_categorias;
+            Estante.findAll().then(function (shelfs) {
+                estantes = shelfs;
+                Categoria.findAll().then(function (category) {
+                    categorias = category;
+                    if (autores.length > 0) {
+                        for (let i = 0; i < autores.length; i++) {
+                            htmlAutor += `<option value="${autores[i].id_autor}">${autores[i].nombre}</option>`;
+                        }
+                    }
+                    if (estante_categoria) {
+                        for (let j = 0; j < estante_categoria.length; j++) {
+                            for (let k = 0; k < estantes.length; k++) {
+                                for (let l = 0; l < categorias.length; l++) {
+                                    if (estante_categoria[j].fk_estante == estantes[k].id_estante && estante_categoria[j].fk_categoria == categorias[l].id_categoria) {
+                                        htmlEstanteCategoria += `<option value="${estante_categoria[j].id_estante_categoria}">Estante ${estantes[k].id_estante} - ${categorias[l].nombre}</option>`
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    res.render('newbook', { autor: htmlAutor, estantes: htmlEstanteCategoria });
+                });
+            });
+        });
+    });
+}
+
+
+function newBook(id_libro, isbn, nombre, lugar, editorial, numero_paginas, fk_autor, fk_estante_categoria) {
+    Libro.create({
+        id_libro: parseInt(id_libro),
+        isbn: verificarNull(isbn),
+        nombre: verificarNull(nombre),
+        lugar: verificarNull(lugar),
+        editorial: verificarNull(editorial),
+        numero_paginas: verificarNull(numero_paginas),
+        fk_autor: verificarNull(fk_autor),
+        fk_estante_categoria: verificarNull(fk_estante_categoria)
+    }).then(function () {
+        console.log('Libro creado');
+    }).catch(function (err) {
+        console.log('Ha ocurrido un error' + err)
+    })
+}
+
+function verificarNull(variable) {
+    return (variable == '') ? null : variable;
+}
+
 exports.listBooks = listBooks;
 exports.startHome = startHome;
-exports.searchBook = searchBook
+exports.searchBook = searchBook;
+exports.newBook = newBook;
+exports.cargarAgregarLibro = cargarAgregarLibro;

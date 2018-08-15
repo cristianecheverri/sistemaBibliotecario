@@ -19,7 +19,21 @@ module.exports = function (app) {
     });
 
     app.get('/newbook', function (req, res) {
-        res.render('newbook'); //Show the form for add a new book
+        functions.cargarAgregarLibro(res);
+        //res.render('newbook'); //Show the form for add a new book
+    });
+
+    app.post('/newbook', function (req, res) {
+        var id_libro = req.body.id_libro;
+        var isbn = req.body.isbn;
+        var nombre = req.body.nombre;
+        var lugar = req.body.lugar;
+        var editorial = req.body.editorial;
+        var numero_paginas = req.body.numero_paginas;
+        var fk_autor = req.body.fk_autor;
+        var fk_estante_categoria = req.body.fk_estante_categoria;
+
+        functions.newBook(id_libro, isbn, nombre, lugar, editorial, numero_paginas, fk_autor, fk_estante_categoria);
     });
 
     app.get('/newuser', function (req, res) {

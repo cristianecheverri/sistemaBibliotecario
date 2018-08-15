@@ -47,7 +47,7 @@ const Estante_Categoria = sequelize.define('estante_categoria',
 const Estante = EstanteModel(sequelize, Sequelize);
 const Categoria = CategoriaModel(sequelize, Sequelize);
 const Autor = AutorModel(sequelize, Sequelize);
-const Libro = LibroModel(sequelize, Sequelize);
+const Libro = LibroModel.definir(sequelize, Sequelize);
 const Usuario = UsuarioModel(sequelize, Sequelize);
 const Transaccion = TransaccionModel(sequelize, Sequelize);
 
@@ -79,11 +79,14 @@ module.exports = {
     Sala,
     Estante,
     Categoria,
+    Estante_Categoria,
     Autor,
     Libro,
     Usuario,
     Transaccion
 }
+
+// LibroModel.createBook(Libro);
 
 // Biblioteca.create({
 //     nombre: 'Centro cultural Anserma',

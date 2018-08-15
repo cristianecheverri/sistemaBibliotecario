@@ -43,49 +43,49 @@
                             </legend>
                             <br>
                             <div class="group-material">
-                                <input type="text" class="tooltips-general material-control" placeholder="Escribe aquí el código correlativo del libro" pattern="[0-9]{1,20}"
+                                <input type="text" class="tooltips-general material-control" id="input-agregar-libro-id" required placeholder="Escribe aquí el código correlativo del libro" pattern="[0-9]{1,20}"
                                     maxlength="20" data-toggle="tooltip" data-placement="top" title="Escribe el código correlativo del libro, solamente números">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Código</label>
                             </div>
                             <div class="group-material">
-                                <input type="text" class="tooltips-general material-control" placeholder="Escribe aquí el ISBN " maxlength="70" data-toggle="tooltip"
+                                <input type="text" id="input-agregar-libro-isbn" class="tooltips-general material-control" placeholder="Escribe aquí el ISBN " maxlength="70" data-toggle="tooltip"
                                     data-placement="top" title="Escribe el ISBN del libro">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>ISBN</label>
                             </div>
                             <div class="group-material">
-                                <input type="text" class="tooltips-general material-control" placeholder="Escribe aquí el título o nombre del libro" required=""
+                                <input type="text" id="input-agregar-libro-nombre" class="tooltips-general material-control" placeholder="Escribe aquí el título o nombre del libro" required=""
                                     maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el título o nombre del libro">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Título</label>
                             </div>
                             <div class="group-material">
-                                <input type="text" class="tooltips-general material-control" placeholder="Escribe aquí el autor del libro" maxlength="70"
-                                    data-toggle="tooltip" data-placement="top" title="Escribe el nombre del autor del libro">
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Autor</label>
+                                <span>Autor</span>
+                                <select class="tooltips-general material-control" id="input-agregar-libro-autor" data-toggle="tooltip" data-placement="top" title="Elige el Autor">
+                                    <option value="0" disabled="" selected="">Seleccione un autor</option>
+                                    <%- autor %>
+                                </select>
                             </div>
                             <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Escribe aquí el lugar de publicación"
+                                <input type="text" id="input-agregar-libro-lugar" class="material-control tooltips-general" placeholder="Escribe aquí el lugar de publicación"
                                     maxlength="70" data-toggle="tooltip" data-placement="top" title="Lugar de publicación">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Lugar</label>
                             </div>
                             <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Escribe aquí la editorial de publicación"
+                                <input type="text" id="input-agregar-libro-editorial" class="material-control tooltips-general" placeholder="Escribe aquí la editorial de publicación"
                                     maxlength="70" data-toggle="tooltip" data-placement="top" title="Editorial de publicación">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Editorial</label>
                             </div>
                             <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Escribe aquí la editorial del libro"
+                                <input type="text" id="input-agregar-libro-numero-paginas" class="material-control tooltips-general" placeholder="Escribe aquí la editorial del libro"
                                     maxlength="70" data-toggle="tooltip" data-placement="top" title="Editorial del libro">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
@@ -93,18 +93,16 @@
                             </div>
                             <div class="group-material">
                                 <span>Estante - Categoría</span>
-                                <select class="tooltips-general material-control" data-toggle="tooltip" data-placement="top" title="Elige la categoría del libro">
-                                    <option value="" disabled="" selected="">Selecciona un estante y la categoria</option>
-                                    <option value="categoria">Categoría</option>
-                                    <option value="categoria">Categoría</option>
-                                    <option value="categoria">Categoría</option>
+                                <select class="tooltips-general material-control" id="input-agregar-libro-estante-categoria" data-toggle="tooltip" data-placement="top" title="Elige la categoría del libro">
+                                    <option value="0" disabled="" selected="">Selecciona un estante y la categoria</option>
+                                    <%- estantes %>
                                 </select>
                             </div>
                             
                             <p class="text-center">
                                 <button type="reset" class="btn btn-info" style="margin-right: 20px;">
                                     <i class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
-                                <button type="submit" class="btn btn-primary">
+                                <button type="" class="btn btn-primary btn-agregar-libro">
                                     <i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
                             </p>
                         </div>
