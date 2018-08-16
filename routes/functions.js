@@ -219,22 +219,33 @@ function verificarNull(variable) {
 }
 
 function chargeLoan(res) {
-    var fechaHoy = new Date().getTime();
-    htmlLoan = '';
-    var loan;
+    htmlLoan = `<h2 class="text-center all-tittles">Listado de préstamos</h2>
+                <div class="table-responsive">
+                    <div class="div-table" style="margin:0 !important;">
+                        <div class="div-table-row div-table-row-list" style="background-color:#DFF0D8; font-weight:bold;">
+                            <div class="div-table-cell" style="width: 6%;">ID</div>
+                            <div class="div-table-cell" style="width: 22%;">Nombre de libro</div>
+                            <div class="div-table-cell" style="width: 22%;">Nombre de usuario</div>
+                            <div class="div-table-cell" style="width: 10%;">Tipo</div>
+                            <div class="div-table-cell" style="width: 10%;">F. Solicitud</div>
+                            <div class="div-table-cell" style="width: 10%;">F. Entrega</div>
+                            <div class="div-table-cell" style="width: 8%;">Eliminar</div>
+                            <div class="div-table-cell" style="width: 8%;">Ver Ficha</div>
+                        </div>
+                    </div>
+                </div>`;
     var libro;
     var usuario;
     Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo' } }).then(function (loan) {
-        loan = loan;
         Libro.findAll().then(function (books) {
             libro = books;
             Usuario.findAll().then(function (users) {
                 usuario = users;
-                if (loan) {
+                if (loan.length > 0) {
                     for (let i = 0; i < loan.length; i++) {
                         for (let j = 0; j < libro.length; j++) {
                             for (let k = 0; k < usuario.length; k++) {
-                                if ((new Date(loan[i].fecha_devolucion) >= fechaHoy) && (loan[i].fk_libro == libro[j].id_libro) && (loan[i].fk_usuario == usuario[k].documento)) {
+                                if ((new Date(loan[i].fecha_devolucion) >= new Date().getTime()) && (loan[i].fk_libro == libro[j].id_libro) && (loan[i].fk_usuario == usuario[k].documento)) {
                                     htmlLoan +=
                                         `<div class="table-responsive">
                                             <div class="div-table" style="margin:0 !important;">
@@ -258,74 +269,99 @@ function chargeLoan(res) {
                             }
                         }
                     }
-                    res.render('loan', { loans: htmlLoan });
+                } else {
+                    htmlLoan = '<h1 class="text-center">No hay registro de prestamos en este momento</h1>'
                 }
-                // res.render('loan', { loans: htmlLoan });
+                res.render('loan', { loans: htmlLoan });
             })
         })
     })
 }
 
 function chargeLoanPending(res) {
-    var fechaHoy = new Date().getTime();
     var htmlLoan = '';
+    var libro;
+    var usuario;
     Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo' } }).then(function (loan) {
-        if (loan) {
-            for (let i = 0; i < loan.length; i++) {
-                if (new Date(loan[i].fecha_devolucion) < fechaHoy) {
-                    htmlLoan +=
-                        `<div class="table-responsive">
-                        <div class="div-table" style="margin:0 !important;">
-                            <div class="div-table-row div-table-row-list">
-                                <div class="div-table-cell" style="width: 6%;">${loan[i].id_transaccion}</div>
-                                <div class="div-table-cell" style="width: 22%;">${loan[i].fk_libro}</div>
-                                <div class="div-table-cell" style="width: 22%;">${loan[i].fk_usuario}</div>
-                                <div class="div-table-cell" style="width: 10%;">${loan[i].tipo_transaccion}</div>
-                                <div class="div-table-cell" style="width: 10%;">${loan[i].fecha_solicitud}</div>
-                                <div class="div-table-cell" style="width: 10%;">${loan[i].fecha_devolucion}</div>
-                                <div class="div-table-cell" style="width: 8%;">
-                                    <button class="btn btn-success"><i class="zmdi zmdi-time-restore"></i></button>
-                                </div>
-                                <div class="div-table-cell" style="width: 8%;">
-                                    <button class="btn btn-info" ><i class="zmdi zmdi-file-text"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`
+        Libro.findAll().then(function (books) {
+            libro = books;
+            Usuario.findAll().then(function (users) {
+                usuario = users;
+                if (loan.length > 0) {
+                    for (let i = 0; i < loan.length; i++) {
+                        for (let j = 0; j < libro.length; j++) {
+                            for (let k = 0; k < usuario.length; k++) {
+                                if ((new Date(loan[i].fecha_devolucion) < new Date().getTime()) && (loan[i].fk_libro == libro[j].id_libro) && (loan[i].fk_usuario == usuario[k].documento)) {
+                                    htmlLoan +=
+                                        `<div class="table-responsive">
+                                            <div class="div-table" style="margin:0 !important;">
+                                                <div class="div-table-row div-table-row-list">
+                                                    <div class="div-table-cell" style="width: 6%;">${loan[i].id_transaccion}</div>
+                                                    <div class="div-table-cell" style="width: 22%;">${libro[j].nombre}</div>
+                                                    <div class="div-table-cell" style="width: 22%;">${usuario[k].nombres} ${usuario[k].apellidos}</div>
+                                                    <div class="div-table-cell" style="width: 10%;">${loan[i].tipo_transaccion}</div>
+                                                    <div class="div-table-cell" style="width: 10%;">${loan[i].fecha_solicitud}</div>
+                                                    <div class="div-table-cell" style="width: 10%;">${loan[i].fecha_devolucion}</div>
+                                                    <div class="div-table-cell" style="width: 8%;">
+                                                        <button class="btn btn-success"><i class="zmdi zmdi-time-restore"></i></button>
+                                                    </div>
+                                                    <div class="div-table-cell" style="width: 8%;">
+                                                        <button class="btn btn-info" ><i class="zmdi zmdi-file-text"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>`
+                                }
+                            }
+                        }
+                    }
                 }
-            }
-        }
-        res.render('loanpending', { loans: htmlLoan });
+                res.render('loanpending', { loans: htmlLoan });
+            })
+
+        })
     })
 }
 
 function chargeLoanReservation(res) {
     var htmlLoan = '';
     Transaccion.findAll({ where: { tipo_transaccion: 'Reservacion' } }).then(function (loan) {
-        if (loan) {
-            for (let i = 0; i < loan.length; i++) {
-                htmlLoan +=
-                    `<div class="table-responsive">
-                        <div class="div-table" style="margin:0 !important;">
-                            <div class="div-table-row div-table-row-list">
-                                <div class="div-table-cell" style="width: 6%;">${loan[i].id_transaccion}</div>
-                                <div class="div-table-cell" style="width: 22%;">${loan[i].fk_libro}</div>
-                                <div class="div-table-cell" style="width: 22%;">${loan[i].fk_usuario}</div>
-                                <div class="div-table-cell" style="width: 10%;">${loan[i].tipo_transaccion}</div>
-                                <div class="div-table-cell" style="width: 10%;">${loan[i].fecha_solicitud}</div>
-                                <div class="div-table-cell" style="width: 10%;">${loan[i].fecha_devolucion}</div>
-                                <div class="div-table-cell" style="width: 8%;">
-                                    <button class="btn btn-success"><i class="zmdi zmdi-timer"></i></button>
-                                </div>
-                                <div class="div-table-cell" style="width: 8%;">
-                                    <button class="btn btn-danger"><i class="zmdi zmdi-delete"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`
-            }
-        }
-        res.render('loanreservation', { loans: htmlLoan });
+        Libro.findAll().then(function (books) {
+            libro = books;
+            Usuario.findAll().then(function (users) {
+                usuario = users;
+                if (loan.length > 0) {
+                    for (let i = 0; i < loan.length; i++) {
+                        for (let j = 0; j < libro.length; j++) {
+                            for (let k = 0; k < usuario.length; k++) {
+                                if ((loan[i].fk_libro == libro[j].id_libro) && (loan[i].fk_usuario == usuario[k].documento)) {
+                                    htmlLoan +=
+                                        `<div class="table-responsive">
+                                            <div class="div-table" style="margin:0 !important;">
+                                                <div class="div-table-row div-table-row-list">
+                                                    <div class="div-table-cell" style="width: 6%;">${loan[i].id_transaccion}</div>
+                                                    <div class="div-table-cell" style="width: 22%;">${libro[j].nombre}</div>
+                                                    <div class="div-table-cell" style="width: 22%;">${usuario[k].nombres} ${usuario[k].apellidos}</div>
+                                                    <div class="div-table-cell" style="width: 10%;">${loan[i].tipo_transaccion}</div>
+                                                    <div class="div-table-cell" style="width: 10%;">${loan[i].fecha_solicitud}</div>
+                                                    <div class="div-table-cell" style="width: 10%;">${loan[i].fecha_devolucion}</div>
+                                                    <div class="div-table-cell" style="width: 8%;">
+                                                        <button class="btn btn-success"><i class="zmdi zmdi-timer"></i></button>
+                                                    </div>
+                                                    <div class="div-table-cell" style="width: 8%;">
+                                                        <button class="btn btn-danger"><i class="zmdi zmdi-delete"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>`
+                                }
+                            }
+                        }
+                    }
+                }
+                res.render('loanreservation', { loans: htmlLoan });
+            })
+        })
     })
 }
 
