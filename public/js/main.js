@@ -34,6 +34,7 @@ $(document).ready(function () {
         var LinkSearchBook = $(this).attr("data-href");
         window.location = LinkSearchBook;
     });
+    
     $('.btn-buscar-libro').click(function (e) {
         e.preventDefault();
 

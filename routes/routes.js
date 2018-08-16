@@ -77,15 +77,18 @@ module.exports = function (app) {
     });
 
     app.get('/loan', function (req, res) {
-        res.render('loan'); //Show all the loans
+        functions.chargeLoan(res);
+        //res.render('loan'); //Show all the loans
     });
 
     app.get('/loanpending', function (req, res) {
-        res.render('loanpending'); //Show all the pending loans
+        functions.chargeLoanPending(res);
+        // res.render('loanpending'); //Show all the pending loans
     });
 
     app.get('/loanreservation', function (req, res) {
-        res.render('loanreservation'); //Show all the reservations
+        functions.chargeLoanReservation(res);
+        //res.render('loanreservation'); //Show all the reservations
     });
 
     app.get('/report', function (req, res) {
