@@ -1,5 +1,9 @@
+let id;
+
 $(document).ready(function () {
+
     $('.tooltips-general').tooltip('hide');
+
     $('.mobile-menu-button').on('click', function () {
         var mobileMenu = $('.navbar-lateral');
         if (mobileMenu.css('display') == 'none') {
@@ -8,10 +12,12 @@ $(document).ready(function () {
             mobileMenu.fadeOut(300);
         }
     });
+
     $('.dropdown-menu-button').on('click', function () {
         var dropMenu = $(this).next('ul');
         dropMenu.slideToggle('slow');
     });
+
     $('.exit-system-button').on('click', function (e) {
         e.preventDefault();
         var LinkExitSystem = $(this).attr("data-href");
@@ -29,12 +35,13 @@ $(document).ready(function () {
             window.location = LinkExitSystem;
         });
     });
+
     $('.search-book-button').click(function (e) {
         e.preventDefault();
         var LinkSearchBook = $(this).attr("data-href");
         window.location = LinkSearchBook;
     });
-    
+
     $('.btn-buscar-libro').click(function (e) {
         e.preventDefault();
 
@@ -52,7 +59,6 @@ $(document).ready(function () {
 
         });
     });
-
 
     $('.btn-agregar-libro').click(function (e) {
         e.preventDefault();
@@ -73,16 +79,74 @@ $(document).ready(function () {
             contentType: 'application/json',
             url: 'http://localhost:4001/newbook',
             success: function (data) {
-                alert(data)
-                //$("#search").html(data);
+                swal({
+                    icon: "success",
+                    title: 'Libro agregado correctamente'
+                });
+                window.location.reload(true);
             },
 
         });
     });
 
+    $('.btn-eliminar-transaccion').click(function () {
+        swal({
+            title: "¿Seguro que quieres eliminar esta transacción?",
+            text: "Esta acción ya no se podrá deshacer, Así que piénsalo bien.",
+            type: "error",
+            showCancelButton: true,
+            confirmButtonColor: '#FF2301',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, estoy seguro',
+            cancelButtonText: "Cancelar"
+        }, function () {
 
+            var transaccion = {};
+            transaccion.id_transaccion = id;
+            transaccion.accion = 'eliminar'
 
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(transaccion),
+                contentType: 'application/json',
+                url: 'http://localhost:4001/loanreservation',
+                success: function (data) {
+                    window.location.reload(true);
+                },
 
+            });
+        });
+    });
+
+    $('.btn-aprobar-prestamo').click(() => {
+
+        swal({
+            title: "¿Estás seguro que deseas aprobar esta reservación?",
+            text: "Esta acción ya no se podrá deshacer, Así que piénsalo bien.",
+            type: "info",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, estoy seguro',
+            cancelButtonText: "Cancelar"
+        }, function () {
+
+            var transaccion = {};
+            transaccion.id_transaccion = id;
+            transaccion.accion = 'aprobar'
+
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(transaccion),
+                contentType: 'application/json',
+                url: 'http://localhost:4001/loanreservation',
+                success: function (data) {
+                    window.location.reload(true);
+                },
+
+            });
+        });
+    });
 
     $('.btn-help').on('click', function () {
         $('#ModalHelp').modal({
@@ -91,6 +155,7 @@ $(document).ready(function () {
         });
     });
 });
+
 (function ($) {
     $(window).load(function () {
         $(".custom-scroll-containers").mCustomScrollbar({
@@ -101,3 +166,7 @@ $(document).ready(function () {
         });
     });
 })(jQuery);
+
+function pasarId(idEntrante) {
+    id = idEntrante;
+}

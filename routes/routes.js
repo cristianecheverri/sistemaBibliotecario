@@ -91,6 +91,14 @@ module.exports = function (app) {
         //res.render('loanreservation'); //Show all the reservations
     });
 
+    app.post('/loanreservation', function (req, res) {
+        var id_transaccion = req.body.id_transaccion;
+        var accion = req.body.accion;
+        console.log(id_transaccion)
+        functions.eliminarReservacion(res, id_transaccion, accion);
+        //res.render('loanreservation'); //Show all the reservations
+    });
+
     app.get('/report', function (req, res) {
         res.render('report'); //Show the reports of books
     });

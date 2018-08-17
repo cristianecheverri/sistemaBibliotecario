@@ -219,21 +219,21 @@ function verificarNull(variable) {
 }
 
 function chargeLoan(res) {
-    htmlLoan = `<h2 class="text-center all-tittles">Listado de préstamos</h2>
-                <div class="table-responsive">
-                    <div class="div-table" style="margin:0 !important;">
-                        <div class="div-table-row div-table-row-list" style="background-color:#DFF0D8; font-weight:bold;">
-                            <div class="div-table-cell" style="width: 6%;">ID</div>
-                            <div class="div-table-cell" style="width: 22%;">Nombre de libro</div>
-                            <div class="div-table-cell" style="width: 22%;">Nombre de usuario</div>
-                            <div class="div-table-cell" style="width: 10%;">Tipo</div>
-                            <div class="div-table-cell" style="width: 10%;">F. Solicitud</div>
-                            <div class="div-table-cell" style="width: 10%;">F. Entrega</div>
-                            <div class="div-table-cell" style="width: 8%;">Eliminar</div>
-                            <div class="div-table-cell" style="width: 8%;">Ver Ficha</div>
-                        </div>
-                    </div>
-                </div>`;
+    htmlLoan =
+        `<div class="table-responsive">
+        <table class="table table-hover text-center">
+            <thead>
+                <tr class="success">
+                    <th class="text-center">#</th>
+                    <th class="text-center">Nombre del libro</th>
+                    <th class="text-center">Nombre de usuario</th>
+                    <th class="text-center">Tipo</th>
+                    <th class="text-center">F. Solicitud</th>
+                    <th class="text-center">F. Entrega</th>
+                    <th class="text-center">Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>`
     var libro;
     var usuario;
     Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo' } }).then(function (loan) {
@@ -247,28 +247,23 @@ function chargeLoan(res) {
                             for (let k = 0; k < usuario.length; k++) {
                                 if ((new Date(loan[i].fecha_devolucion) >= new Date().getTime()) && (loan[i].fk_libro == libro[j].id_libro) && (loan[i].fk_usuario == usuario[k].documento)) {
                                     htmlLoan +=
-                                        `<div class="table-responsive">
-                                            <div class="div-table" style="margin:0 !important;">
-                                                <div class="div-table-row div-table-row-list">
-                                                    <div class="div-table-cell" style="width: 6%;">${loan[i].id_transaccion}</div>
-                                                    <div class="div-table-cell" style="width: 22%;">${libro[j].nombre}</div>
-                                                    <div class="div-table-cell" style="width: 22%;">${usuario[k].nombres} ${usuario[k].apellidos}</div>
-                                                    <div class="div-table-cell" style="width: 10%;">${loan[i].tipo_transaccion}</div>
-                                                    <div class="div-table-cell" style="width: 10%;">${loan[i].fecha_solicitud}</div>
-                                                    <div class="div-table-cell" style="width: 10%;">${loan[i].fecha_devolucion}</div>
-                                                    <div class="div-table-cell" style="width: 8%;">
-                                                        <button class="btn btn-danger"><i class="zmdi zmdi-delete"></i></button>
-                                                    </div>
-                                                    <div class="div-table-cell" style="width: 8%;">
-                                                        <button class="btn btn-info"><i class="zmdi zmdi-file-text"></i></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>`
+                                        `<tr>
+                                        <td>${loan[i].id_transaccion}</td>
+                                        <td>${libro[j].nombre}</td>
+                                        <td>${usuario[k].nombres} ${usuario[k].apellidos}</td>
+                                        <td>${loan[i].tipo_transaccion}</td>
+                                        <td>${loan[i].fecha_solicitud}</td>
+                                        <td>${loan[i].fecha_devolucion}</td>
+                                        <td><button class="btn btn-danger btn-eliminar-transaccion" onclick="pasarId(${loan[i].id_transaccion})"><i class="zmdi zmdi-delete"></i></button></td>
+                                    </tr>`
                                 }
                             }
                         }
                     }
+                    htmlLoan +=
+                        `</tbody>
+                        </table>
+                        </div>`
                 } else {
                     htmlLoan = '<h1 class="text-center">No hay registro de prestamos en este momento</h1>'
                 }
@@ -279,10 +274,25 @@ function chargeLoan(res) {
 }
 
 function chargeLoanPending(res) {
-    var htmlLoan = '';
+    var htmlLoan =
+        `<div class="table-responsive">
+        <table class="table table-hover text-center">
+            <thead>
+                <tr class="success">
+                    <th class="text-center">#</th>
+                    <th class="text-center">Nombre del libro</th>
+                    <th class="text-center">Nombre de usuario</th>
+                    <th class="text-center">Tipo</th>
+                    <th class="text-center">F. Solicitud</th>
+                    <th class="text-center">F. Entrega</th>
+                    <th class="text-center">Recibir</th>
+                    <th class="text-center">Ver ficha</th>
+                </tr>
+            </thead>
+            <tbody>`;
     var libro;
     var usuario;
-    Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo' } }).then(function (loan) {
+    Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo', fecha_devolucion: { [Op.lt]: new Date().getTime() } } }).then(function (loan) {
         Libro.findAll().then(function (books) {
             libro = books;
             Usuario.findAll().then(function (users) {
@@ -291,40 +301,54 @@ function chargeLoanPending(res) {
                     for (let i = 0; i < loan.length; i++) {
                         for (let j = 0; j < libro.length; j++) {
                             for (let k = 0; k < usuario.length; k++) {
-                                if ((new Date(loan[i].fecha_devolucion) < new Date().getTime()) && (loan[i].fk_libro == libro[j].id_libro) && (loan[i].fk_usuario == usuario[k].documento)) {
+                                if ((loan[i].fk_libro == libro[j].id_libro) && (loan[i].fk_usuario == usuario[k].documento)) {
                                     htmlLoan +=
-                                        `<div class="table-responsive">
-                                            <div class="div-table" style="margin:0 !important;">
-                                                <div class="div-table-row div-table-row-list">
-                                                    <div class="div-table-cell" style="width: 6%;">${loan[i].id_transaccion}</div>
-                                                    <div class="div-table-cell" style="width: 22%;">${libro[j].nombre}</div>
-                                                    <div class="div-table-cell" style="width: 22%;">${usuario[k].nombres} ${usuario[k].apellidos}</div>
-                                                    <div class="div-table-cell" style="width: 10%;">${loan[i].tipo_transaccion}</div>
-                                                    <div class="div-table-cell" style="width: 10%;">${loan[i].fecha_solicitud}</div>
-                                                    <div class="div-table-cell" style="width: 10%;">${loan[i].fecha_devolucion}</div>
-                                                    <div class="div-table-cell" style="width: 8%;">
-                                                        <button class="btn btn-success"><i class="zmdi zmdi-time-restore"></i></button>
-                                                    </div>
-                                                    <div class="div-table-cell" style="width: 8%;">
-                                                        <button class="btn btn-info" ><i class="zmdi zmdi-file-text"></i></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>`
+                                        `<tr>
+                                        <td>${loan[i].id_transaccion}</td>
+                                        <td>${libro[j].nombre}</td>
+                                        <td>${usuario[k].nombres} ${usuario[k].apellidos}</td>
+                                        <td>${loan[i].tipo_transaccion}</td>
+                                        <td>${loan[i].fecha_solicitud}</td>
+                                        <td>${loan[i].fecha_devolucion}</td>
+                                        <td><button class="btn btn-success btn-prueba"><i class="zmdi zmdi-time-restore"></i></button></td>
+                                        <td><button class="btn btn-info" ><i class="zmdi zmdi-file-text"></i></button></td>
+                                    </tr>`
                                 }
                             }
                         }
                     }
+                    htmlLoan +=
+                        `</tbody>
+                    </table>
+                    </div>`
+                } else {
+                    htmlLoan = '<h1 class="text-center">No hay registro de prestamos sin devolver en este momento</h1>'
                 }
                 res.render('loanpending', { loans: htmlLoan });
             })
-
         })
     })
 }
 
 function chargeLoanReservation(res) {
-    var htmlLoan = '';
+    var htmlLoan =
+        `<div class="table-responsive">
+        <table class="table table-hover text-center">
+            <thead>
+                <tr class="success">
+                    <th class="text-center">#</th>
+                    <th class="text-center">Nombre del libro</th>
+                    <th class="text-center">Nombre de usuario</th>
+                    <th class="text-center">Tipo</th>
+                    <th class="text-center">F. Solicitud</th>
+                    <th class="text-center">F. Entrega</th>
+                    <th class="text-center">Aprobar</th>
+                    <th class="text-center">Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>`;
+    var libro;
+    var usuario;
     Transaccion.findAll({ where: { tipo_transaccion: 'Reservacion' } }).then(function (loan) {
         Libro.findAll().then(function (books) {
             libro = books;
@@ -336,28 +360,26 @@ function chargeLoanReservation(res) {
                             for (let k = 0; k < usuario.length; k++) {
                                 if ((loan[i].fk_libro == libro[j].id_libro) && (loan[i].fk_usuario == usuario[k].documento)) {
                                     htmlLoan +=
-                                        `<div class="table-responsive">
-                                            <div class="div-table" style="margin:0 !important;">
-                                                <div class="div-table-row div-table-row-list">
-                                                    <div class="div-table-cell" style="width: 6%;">${loan[i].id_transaccion}</div>
-                                                    <div class="div-table-cell" style="width: 22%;">${libro[j].nombre}</div>
-                                                    <div class="div-table-cell" style="width: 22%;">${usuario[k].nombres} ${usuario[k].apellidos}</div>
-                                                    <div class="div-table-cell" style="width: 10%;">${loan[i].tipo_transaccion}</div>
-                                                    <div class="div-table-cell" style="width: 10%;">${loan[i].fecha_solicitud}</div>
-                                                    <div class="div-table-cell" style="width: 10%;">${loan[i].fecha_devolucion}</div>
-                                                    <div class="div-table-cell" style="width: 8%;">
-                                                        <button class="btn btn-success"><i class="zmdi zmdi-timer"></i></button>
-                                                    </div>
-                                                    <div class="div-table-cell" style="width: 8%;">
-                                                        <button class="btn btn-danger"><i class="zmdi zmdi-delete"></i></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>`
+                                        `<tr>
+                                        <td>${loan[i].id_transaccion}</td>
+                                        <td>${libro[j].nombre}</td>
+                                        <td>${usuario[k].nombres} ${usuario[k].apellidos}</td>
+                                        <td>${loan[i].tipo_transaccion}</td>
+                                        <td>${loan[i].fecha_solicitud}</td>
+                                        <td>${loan[i].fecha_devolucion}</td>
+                                        <td><button class="btn btn-success btn-aprobar-prestamo" onclick="pasarId(${loan[i].id_transaccion})"><i class="zmdi zmdi-timer"></i></button></td>
+                                        <td><button class="btn btn-danger btn-eliminar-transaccion" onclick="pasarId(${loan[i].id_transaccion})"><i class="zmdi zmdi-delete"></i></button></td>
+                                    </tr>`
                                 }
                             }
                         }
                     }
+                    htmlLoan +=
+                        `</tbody>
+                    </table>
+                    </div>`
+                } else {
+                    htmlLoan = '<h1 class="text-center">No hay registro de reservaciones en este momento</h1>'
                 }
                 res.render('loanreservation', { loans: htmlLoan });
             })
@@ -365,6 +387,38 @@ function chargeLoanReservation(res) {
     })
 }
 
+function eliminarReservacion(res, id_transaccion, accion) {
+    if (accion == 'eliminar') {
+        Transaccion.destroy({
+            where: {
+                id_transaccion: id_transaccion
+            }
+        }).then(() => {
+            res.send();
+        }).catch((err) => {
+
+        });
+    } else if (accion == 'aprobar') {
+        Transaccion.update({
+            tipo_transaccion: 'Prestamo'
+        }, {
+                where: {
+                    id_transaccion: {
+                        [Op.eq]: id_transaccion
+                    }
+                }
+            }).then(() => {
+                res.send();
+            }).catch((err) => {
+
+            });
+    } else {
+        console.log('Algo pasa')
+    }
+}
+
+
+exports.eliminarReservacion = eliminarReservacion;
 exports.chargeLoanReservation = chargeLoanReservation;
 exports.chargeLoanPending = chargeLoanPending;
 exports.chargeLoan = chargeLoan;
