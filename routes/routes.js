@@ -115,6 +115,15 @@ module.exports = function (app) {
         functions.chargeLoanPending(res); //Show all the pending loans
     });
 
+    app.post('/loanpending', function (req, res) {
+        var id_transaccion = req.body.id_transaccion;
+        var accion = req.body.accion;
+        console.log(id_transaccion)
+        console.log(accion)
+
+        functions.accionPrestamosPendientes(res, id_transaccion, accion); //Show all the pending loans
+    });
+
     app.get('/loanreservation', function (req, res) {
         functions.chargeLoanReservation(res); //Show all the reservations
     });

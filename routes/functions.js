@@ -3,6 +3,8 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const htmlCode = require('./html')
 
+var fechaHoy = new Date().getTime();
+
 function startHome(res) {
     var cantidadAdministradores = 0;
     var cantidadUsuariosCorrientes = 0;
@@ -12,7 +14,7 @@ function startHome(res) {
     var cantidadReservaciones = 0;
     var cantidadDevolucionesPendientes = 0;
     var cantidadPrestamos = 0;
-    var fechaHoy = new Date().getTime();
+    //var fechaHoy = new Date().getTime();
 
     Usuario.findAll({ where: { tipo_usuario: 'Administrador' } }).then(function (admin) {
         cantidadAdministradores = admin.length;
@@ -213,7 +215,7 @@ function chargeLoan(res) {
             <tbody>`
     var libro;
     var usuario;
-    Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo', fecha_devolucion: { [Op.lt]: new Date().getTime() } } }).then(function (loan) {
+    Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo', esprestado: false } }).then(function (loan) {
         Libro.findAll().then(function (books) {
             libro = books;
             Usuario.findAll().then(function (users) {
@@ -263,13 +265,14 @@ function chargeLoanPending(res) {
                     <th class="text-center">F. Solicitud</th>
                     <th class="text-center">F. Entrega</th>
                     <th class="text-center">Recibir</th>
-                    <th class="text-center">Ver ficha</th>
+                    <th class="text-center">Eliminar</th>
                 </tr>
             </thead>
             <tbody>`;
     var libro;
     var usuario;
-    Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo', fecha_devolucion: { [Op.gte]: new Date().getTime() } } }).then(function (loan) {
+    var color;
+    Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo', esprestado: true } }).then(function (loan) {
         Libro.findAll().then(function (books) {
             libro = books;
             Usuario.findAll().then(function (users) {
@@ -279,25 +282,23 @@ function chargeLoanPending(res) {
                         for (let j = 0; j < libro.length; j++) {
                             for (let k = 0; k < usuario.length; k++) {
                                 if ((loan[i].fk_libro == libro[j].id_libro) && (loan[i].fk_usuario == usuario[k].documento)) {
+                                    color = (Date.parse(loan[i].fecha_devolucion) < new Date().getTime()) ? 'danger' : '';
                                     htmlLoan +=
-                                        `<tr>
+                                        `<tr class=${color}>
                                         <td>${loan[i].id_transaccion}</td>
                                         <td>${libro[j].nombre}</td>
                                         <td>${usuario[k].nombres} ${usuario[k].apellidos}</td>
                                         <td>${loan[i].tipo_transaccion}</td>
                                         <td>${loan[i].fecha_solicitud}</td>
                                         <td>${loan[i].fecha_devolucion}</td>
-                                        <td><button class="btn btn-success btn-prueba"><i class="zmdi zmdi-time-restore"></i></button></td>
-                                        <td><button class="btn btn-info" ><i class="zmdi zmdi-file-text"></i></button></td>
+                                        <td><button class="btn btn-success btn-recibir-prestamo" onclick="pasarId(${loan[i].id_transaccion})"><i class="zmdi zmdi-timer"></i></button></td>
+                                        <td><button class="btn btn-danger btn-eliminar-transaccion" onclick="pasarId(${loan[i].id_transaccion})"><i class="zmdi zmdi-delete"></i></button></td>
                                     </tr>`
                                 }
                             }
                         }
                     }
-                    htmlLoan +=
-                        `</tbody>
-                    </table>
-                    </div>`
+                    htmlLoan += `</tbody></table></div>`
                 } else {
                     htmlLoan = '<h1 class="text-center">No hay registro de prestamos sin devolver en este momento</h1>'
                 }
@@ -379,6 +380,38 @@ function accionReservacion(res, id_transaccion, accion) {
         Transaccion.update({
             tipo_transaccion: 'Prestamo',
             esprestado: true
+        }, {
+                where: {
+                    id_transaccion: {
+                        [Op.eq]: id_transaccion
+                    }
+                }
+            }).then(() => {
+                res.send();
+            }).catch((err) => {
+
+            });
+    } else {
+        console.log('Algo pasa')
+    }
+}
+
+function accionPrestamosPendientes(res, id_transaccion, accion) {
+    if (accion == 'eliminar') {
+        Transaccion.destroy({
+            where: {
+                id_transaccion: id_transaccion
+            }
+        }).then(() => {
+            res.send();
+        }).catch((err) => {
+
+        });
+    } else if (accion == 'recibir') {
+        Transaccion.update({
+            tipo_transaccion: 'Prestamo',
+            esprestado: false,
+            fecha_devolucion: new Date().getTime()
         }, {
                 where: {
                     id_transaccion: {
@@ -491,9 +524,9 @@ let agregarSala = (id_sala, nombre, fk_biblioteca) => {
         id_sala: id_sala,
         nombre: nombre,
         fk_biblioteca: fk_biblioteca
-    }).then(function(){
+    }).then(function () {
 
-    }).catch(function(err){
+    }).catch(function (err) {
         console.log('EERRROOORR ' + err)
     })
 }
@@ -514,3 +547,4 @@ exports.newInstitution = newInstitution;
 exports.cargarSala = cargarSala;
 exports.accionSala = accionSala;
 exports.cargarAgregarSala = cargarAgregarSala;
+exports.accionPrestamosPendientes = accionPrestamosPendientes;

@@ -78,12 +78,12 @@ $(document).ready(function () {
             data: JSON.stringify(agregarLibro),
             contentType: 'application/json',
             url: 'http://localhost:4001/newbook',
-            success: 
+            success:
                 swal({
                     icon: "success",
                     type: "success",
                     title: 'Libro agregado correctamente'
-                }, function() {
+                }, function () {
                     window.location.reload(true);
                 })
         });
@@ -104,12 +104,12 @@ $(document).ready(function () {
             data: JSON.stringify(agregarBiblioteca),
             contentType: 'application/json',
             url: 'http://localhost:4001/newinstitution',
-            success: 
+            success:
                 swal({
                     icon: "success",
                     type: "success",
                     title: 'Biblioteca agregada correctamente'
-                }, function() {
+                }, function () {
                     window.location.reload(true);
                 })
         });
@@ -128,12 +128,12 @@ $(document).ready(function () {
             data: JSON.stringify(agregarSala),
             contentType: 'application/json',
             url: 'http://localhost:4001/newsaloon',
-            success: 
+            success:
                 swal({
                     icon: "success",
                     type: "success",
                     title: 'Sala agregada correctamente'
-                }, function() {
+                }, function () {
                     window.location.reload(true);
                 })
         });
@@ -191,7 +191,7 @@ $(document).ready(function () {
                 success: function (data) {
                     window.location.reload(true);
                 },
-                error: function(){
+                error: function () {
                     console.log('error')
                 }
 
@@ -222,7 +222,7 @@ $(document).ready(function () {
                 success: function (data) {
                     window.location.reload(true);
                 },
-                error: function(err){
+                error: function (err) {
                     console.log('error ' + err)
                 }
 
@@ -230,7 +230,7 @@ $(document).ready(function () {
         });
     });
 
-    $('.btn-aprobar-prestamo').click(() => {
+    $('.btn-aprobar-prestamo').click(function () {
 
         swal({
             title: "¿Estás seguro que deseas aprobar esta reservación?",
@@ -252,6 +252,36 @@ $(document).ready(function () {
                 data: JSON.stringify(transaccion),
                 contentType: 'application/json',
                 url: 'http://localhost:4001/loanreservation',
+                success: function (data) {
+                    window.location.reload(true);
+                },
+
+            });
+        });
+    });
+
+    $('.btn-recibir-prestamo').click(function () {
+
+        swal({
+            title: "¿Estás seguro que deseas recibir este prestamo?",
+            text: "Esta acción ya no se podrá deshacer, Así que piénsalo bien.",
+            type: "info",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, estoy seguro',
+            cancelButtonText: "Cancelar"
+        }, function () {
+
+            var transaccion = {};
+            transaccion.id_transaccion = id;
+            transaccion.accion = 'recibir'
+
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(transaccion),
+                contentType: 'application/json',
+                url: 'http://localhost:4001/loanpending',
                 success: function (data) {
                     window.location.reload(true);
                 },
