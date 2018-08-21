@@ -78,14 +78,64 @@ $(document).ready(function () {
             data: JSON.stringify(agregarLibro),
             contentType: 'application/json',
             url: 'http://localhost:4001/newbook',
-            success: function (data) {
+            success: 
                 swal({
                     icon: "success",
+                    type: "success",
                     title: 'Libro agregado correctamente'
-                });
-                window.location.reload(true);
-            },
+                }, function() {
+                    window.location.reload(true);
+                })
+        });
+    });
 
+    $('.btn-agregar-biblioteca').click(function (e) {
+        e.preventDefault();
+
+        var agregarBiblioteca = {};
+        agregarBiblioteca.id_biblioteca = $('#input-agregar-biblioteca-id').val();
+        agregarBiblioteca.nombre = $('#input-agregar-biblioteca-nombre').val();
+        agregarBiblioteca.direccion = $('#input-agregar-biblioteca-direccion').val();
+        agregarBiblioteca.correo = $('#input-agregar-biblioteca-correo').val();
+        agregarBiblioteca.telefono = $('#input-agregar-biblioteca-telefono').val();
+
+        $.ajax({
+            type: 'POST',
+            data: JSON.stringify(agregarBiblioteca),
+            contentType: 'application/json',
+            url: 'http://localhost:4001/newinstitution',
+            success: 
+                swal({
+                    icon: "success",
+                    type: "success",
+                    title: 'Biblioteca agregada correctamente'
+                }, function() {
+                    window.location.reload(true);
+                })
+        });
+    });
+
+    $('.btn-agregar-sala').click(function (e) {
+        e.preventDefault();
+
+        var agregarSala = {};
+        agregarSala.id_sala = $('#input-agregar-sala-id').val();
+        agregarSala.nombre = $('#input-agregar-sala-nombre').val();
+        agregarSala.fk_biblioteca = $('#input-agregar-sala-biblioteca').val();
+
+        $.ajax({
+            type: 'POST',
+            data: JSON.stringify(agregarSala),
+            contentType: 'application/json',
+            url: 'http://localhost:4001/newsaloon',
+            success: 
+                swal({
+                    icon: "success",
+                    type: "success",
+                    title: 'Sala agregada correctamente'
+                }, function() {
+                    window.location.reload(true);
+                })
         });
     });
 
@@ -113,6 +163,68 @@ $(document).ready(function () {
                 success: function (data) {
                     window.location.reload(true);
                 },
+
+            });
+        });
+    });
+
+    $('.btn-eliminar-biblioteca').click(function () {
+        swal({
+            title: "¿Seguro que quieres eliminar esta biblioteca?",
+            text: "Esta acción ya no se podrá deshacer, Así que piénsalo bien.",
+            type: "error",
+            showCancelButton: true,
+            confirmButtonColor: '#FF2301',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, estoy seguro',
+            cancelButtonText: "Cancelar"
+        }, function () {
+
+            var biblioteca = {};
+            biblioteca.id_biblioteca = id;
+
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(biblioteca),
+                contentType: 'application/json',
+                url: 'http://localhost:4001/institution',
+                success: function (data) {
+                    window.location.reload(true);
+                },
+                error: function(){
+                    console.log('error')
+                }
+
+            });
+        });
+    });
+
+    $('.btn-eliminar-sala').click(function () {
+        swal({
+            title: "¿Seguro que quieres eliminar esta sala?",
+            text: "Esta acción ya no se podrá deshacer, Así que piénsalo bien.",
+            type: "error",
+            showCancelButton: true,
+            confirmButtonColor: '#FF2301',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, estoy seguro',
+            cancelButtonText: "Cancelar"
+        }, function () {
+
+            var sala = {};
+            sala.id_sala = id;
+
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(sala),
+                contentType: 'application/json',
+                url: 'http://localhost:4001/saloon',
+                success: function (data) {
+                    window.location.reload(true);
+                },
+                error: function(err){
+                    console.log('error ' + err)
+                }
 
             });
         });

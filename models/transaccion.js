@@ -18,6 +18,10 @@ module.exports = (sequelize, type) => {
                 type: type.DATEONLY,
                 allowNull: false
             },
+            esprestado: {
+                type: type.BOOLEAN,
+                allowNull: false
+            },
             createdAt: type.DATEONLY,
             updatedAt: type.DATEONLY
         },

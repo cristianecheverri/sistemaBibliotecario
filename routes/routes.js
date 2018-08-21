@@ -20,7 +20,6 @@ module.exports = function (app) {
 
     app.get('/newbook', function (req, res) {
         functions.cargarAgregarLibro(res);
-        //res.render('newbook'); //Show the form for add a new book
     });
 
     app.post('/newbook', function (req, res) {
@@ -41,20 +40,52 @@ module.exports = function (app) {
     });
 
     app.get('/institution', function (req, res) {
-        res.render('institution'); //Show the registred institutions
+        functions.cargarBibliotecas(res); //Show the registred institutions
     });
+
+    app.post('/institution', function (req, res) {
+        var id_biblioteca = req.body.id_biblioteca;
+        functions.accionBiblioteca(res, id_biblioteca);
+    })
 
     app.get('/newinstitution', function (req, res) {
         res.render('newinstitution'); //Lets add a new institution
     });
 
+    app.post('/newinstitution', function (req, res) {
+        var id_biblioteca = req.body.id_biblioteca;
+        var nombre = req.body.nombre;
+        var direccion = req.body.direccion;
+        var correo = req.body.correo;
+        var telefono = req.body.telefono;
+
+        functions.newInstitution(id_biblioteca, nombre, direccion, correo, telefono);
+    })
+
     app.get('/saloon', function (req, res) {
-        res.render('saloon'); //show the registred rooms
+        functions.cargarSala(res) //show the registred rooms
     });
 
+    app.post('/saloon', function (req, res) {
+        var id_sala = req.body.id_sala;
+
+        functions.accionSala(res, id_sala);
+    })
+
     app.get('/newsaloon', function (req, res) {
-        res.render('newsaloon'); //Lets add a new room
+        functions.cargarAgregarSala(res) //Lets add a new room
+        //res.render('newsaloon'); 
     });
+
+    app.post('/newsaloon', function (req, res) {
+        var id_sala = req.body.id_sala;
+        var nombre = req.body.nombre;
+        var fk_biblioteca = req.body.fk_biblioteca;
+
+        console.log(id_sala + ' ' + nombre + ' ' + fk_biblioteca)
+
+        functions.agregarSala(id_sala, nombre, fk_biblioteca, res);
+    })
 
     app.get('/category', function (req, res) {
         res.render('category'); //Show the registred categories
@@ -77,26 +108,22 @@ module.exports = function (app) {
     });
 
     app.get('/loan', function (req, res) {
-        functions.chargeLoan(res);
-        //res.render('loan'); //Show all the loans
+        functions.chargeLoan(res); //Show all the loans
     });
 
     app.get('/loanpending', function (req, res) {
-        functions.chargeLoanPending(res);
-        // res.render('loanpending'); //Show all the pending loans
+        functions.chargeLoanPending(res); //Show all the pending loans
     });
 
     app.get('/loanreservation', function (req, res) {
-        functions.chargeLoanReservation(res);
-        //res.render('loanreservation'); //Show all the reservations
+        functions.chargeLoanReservation(res); //Show all the reservations
     });
 
     app.post('/loanreservation', function (req, res) {
         var id_transaccion = req.body.id_transaccion;
         var accion = req.body.accion;
         console.log(id_transaccion)
-        functions.eliminarReservacion(res, id_transaccion, accion);
-        //res.render('loanreservation'); //Show all the reservations
+        functions.accionReservacion(res, id_transaccion, accion); //Show all the reservations
     });
 
     app.get('/report', function (req, res) {

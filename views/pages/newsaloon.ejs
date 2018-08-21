@@ -65,30 +65,30 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                             <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Código de sala" required="" pattern="[0-9]{1,10}"
+                                <input type="text" class="material-control tooltips-general" id="input-agregar-sala-id" placeholder="Código de sala" required="" pattern="[0-9]{1,10}"
                                     maxlength="10" data-toggle="tooltip" data-placement="top" title="Solo números, máximo 10 caracteres">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Código</label>
                             </div>
                             <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Nombre de la institución" required="" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{1,255}"
+                                <input type="text" class="material-control tooltips-general" id="input-agregar-sala-nombre" placeholder="Nombre de la institución" required="" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{1,255}"
                                     maxlength="255" data-toggle="tooltip" data-placement="top" title="Escribe el nombre de la sala">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Nombre de la sala</label>
                             </div>
                             <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Código de la institución" pattern="{1,255}"
-                                    maxlength="255" data-toggle="tooltip" data-placement="top" title="Escriba el código de la institución">
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Biblioteca</label>
+                                <span>Biblioteca</span>
+                                <select class="tooltips-general material-control" id="input-agregar-sala-biblioteca" data-toggle="tooltip" data-placement="top" title="Elige la biblioteca">
+                                    <option value="0" disabled="" selected="">Selecciona una biblioteca</option>
+                                    <%- bibliotecas %>
+                                </select>
                             </div>
                             <p class="text-center">
                                 <button type="reset" class="btn btn-info" style="margin-right: 20px;">
                                     <i class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary btn-agregar-sala">
                                     <i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
                             </p>
                         </div>

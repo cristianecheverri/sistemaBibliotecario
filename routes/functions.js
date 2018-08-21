@@ -1,6 +1,7 @@
 const { Biblioteca, Sala, Estante, Categoria, Estante_Categoria, Autor, Libro, Usuario, Transaccion } = require('../connection');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+const htmlCode = require('./html')
 
 function startHome(res) {
     var cantidadAdministradores = 0;
@@ -25,9 +26,9 @@ function startHome(res) {
                         cantidadEstantes = shelf.length;
                         Transaccion.findAll({ where: { tipo_transaccion: 'Reservacion' } }).then(function (reservation) {
                             cantidadReservaciones = reservation.length;
-                            Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo', fecha_devolucion: { [Op.lt]: fechaHoy } } }).then(function (loanpending) {
+                            Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo', fecha_devolucion: { [Op.gte]: fechaHoy } } }).then(function (loanpending) {
                                 cantidadDevolucionesPendientes = loanpending.length;
-                                Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo', fecha_devolucion: { [Op.gt]: fechaHoy } } }).then(function (loan) {
+                                Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo', fecha_devolucion: { [Op.lt]: fechaHoy } } }).then(function (loan) {
                                     cantidadPrestamos = loan.length;
 
                                     res.render('home', {
@@ -57,48 +58,16 @@ function listBooks(res) {
     var autor;
     var i, j;
 
-    Libro.findAll().then(function (book) {
+    Libro.findAll({ order: ['id_libro'] }).then(function (book) {
         libro = book;
         Autor.findAll().then(function (author) {
             autor = author;
             for (i = 0; i < libro.length; i++) {
                 for (j = 0; j < autor.length; j++) {
                     if (libro[i].fk_autor == autor[j].id_autor) {
-                        html +=
-                            `<div class="media media-hover">
-                            <div class="media-left media-middle">
-                                <a href="#!" class="tooltips-general" data-toggle="tooltip" data-placement="right" title="Más información del libro">
-                                    <img class="media-object" src="assets/img/book.png" alt="Libro" width="48" height="48">
-                                </a>
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">${i + 1} - ${libro[i].nombre}</h4>
-                                <div class="pull-left">
-                                    <strong>${author[j].nombre}</strong><br>
-                                </div>
-                                <p class="text-center pull-right">
-                                    <a href="" id="${libro[i].id_libro}" class="btn btn-info btn-xs" style="margin-right: 10px;"><i class="zmdi zmdi-info-outline"></i> &nbsp;&nbsp; Más información</a>
-                                </p>
-                            </div>
-                        </div>`
+                        html += htmlCode.mostrarLibros(libro[i], autor[j].nombre);
                     } else if (libro[i].fk_autor == null) {
-                        html +=
-                            `<div class="media media-hover">
-                            <div class="media-left media-middle">
-                                <a href="" class="tooltips-general" data-toggle="tooltip" data-placement="right" title="Más información del libro">
-                                    <img class="media-object" src="assets/img/book.png" alt="Libro" width="48" height="48">
-                                </a>
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">${i + 1} - ${libro[i].nombre}</h4>
-                                <div class="pull-left">
-                                <strong>Anónimo</strong><br>
-                                </div>
-                                <p class="text-center pull-right">
-                                    <a href="" class="btn btn-info btn-xs btn-libro" style="margin-right: 10px;" id="${libro[i].id_libro}"><i class="zmdi zmdi-info-outline"></i> &nbsp;&nbsp; Más información</a>
-                                </p>
-                            </div>
-                        </div>`
+                        html += htmlCode.mostrarLibros(libro[i], 'Anónimo');
                         break;
                     }
                 }
@@ -112,13 +81,7 @@ function searchBook(res, libroABuscar, id) {
     var htmlLibrosBusqueda = '<h3 class="text-center all-tittles">resultados de la búsqueda</h3>';
     var librosEncontrados;
     var autores;
-    Libro.findAll({
-        where: {
-            nombre: {
-                [Op.iLike]: `%${libroABuscar}%`
-            }
-        }
-    }).then(function (books) {
+    Libro.findAll({ where: { nombre: { [Op.iLike]: `%${libroABuscar}%` } } }).then(function (books) {
         librosEncontrados = books;
         Autor.findAll().then(function (author) {
             autores = author;
@@ -214,6 +177,20 @@ function newBook(id_libro, isbn, nombre, lugar, editorial, numero_paginas, fk_au
     })
 }
 
+function newInstitution(id_biblioteca, nombre, direccion, correo, telefono) {
+    Biblioteca.create({
+        id_biblioteca: parseInt(id_biblioteca),
+        nombre: verificarNull(nombre),
+        direccion: verificarNull(direccion),
+        correo: verificarNull(correo),
+        telefono: verificarNull(telefono)
+    }).then(function () {
+
+    }).catch(function (err) {
+        console.log('Ha ocurrido un error ' + err)
+    })
+}
+
 function verificarNull(variable) {
     return (variable == '') ? null : variable;
 }
@@ -236,7 +213,7 @@ function chargeLoan(res) {
             <tbody>`
     var libro;
     var usuario;
-    Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo' } }).then(function (loan) {
+    Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo', fecha_devolucion: { [Op.lt]: new Date().getTime() } } }).then(function (loan) {
         Libro.findAll().then(function (books) {
             libro = books;
             Usuario.findAll().then(function (users) {
@@ -245,7 +222,7 @@ function chargeLoan(res) {
                     for (let i = 0; i < loan.length; i++) {
                         for (let j = 0; j < libro.length; j++) {
                             for (let k = 0; k < usuario.length; k++) {
-                                if ((new Date(loan[i].fecha_devolucion) >= new Date().getTime()) && (loan[i].fk_libro == libro[j].id_libro) && (loan[i].fk_usuario == usuario[k].documento)) {
+                                if ((loan[i].fk_libro == libro[j].id_libro) && (loan[i].fk_usuario == usuario[k].documento)) {
                                     htmlLoan +=
                                         `<tr>
                                         <td>${loan[i].id_transaccion}</td>
@@ -292,7 +269,7 @@ function chargeLoanPending(res) {
             <tbody>`;
     var libro;
     var usuario;
-    Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo', fecha_devolucion: { [Op.lt]: new Date().getTime() } } }).then(function (loan) {
+    Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo', fecha_devolucion: { [Op.gte]: new Date().getTime() } } }).then(function (loan) {
         Libro.findAll().then(function (books) {
             libro = books;
             Usuario.findAll().then(function (users) {
@@ -358,7 +335,7 @@ function chargeLoanReservation(res) {
                     for (let i = 0; i < loan.length; i++) {
                         for (let j = 0; j < libro.length; j++) {
                             for (let k = 0; k < usuario.length; k++) {
-                                if ((loan[i].fk_libro == libro[j].id_libro) && (loan[i].fk_usuario == usuario[k].documento)) {
+                                if ((loan[i].fk_libro == libro[j].id_libro) && (loan[i].fk_usuario == usuario[k].documento) && (loan[i].esprestado == false)) {
                                     htmlLoan +=
                                         `<tr>
                                         <td>${loan[i].id_transaccion}</td>
@@ -374,10 +351,10 @@ function chargeLoanReservation(res) {
                             }
                         }
                     }
-                    htmlLoan +=
-                        `</tbody>
+                    htmlLoan += `</tbody>
                     </table>
                     </div>`
+
                 } else {
                     htmlLoan = '<h1 class="text-center">No hay registro de reservaciones en este momento</h1>'
                 }
@@ -387,7 +364,7 @@ function chargeLoanReservation(res) {
     })
 }
 
-function eliminarReservacion(res, id_transaccion, accion) {
+function accionReservacion(res, id_transaccion, accion) {
     if (accion == 'eliminar') {
         Transaccion.destroy({
             where: {
@@ -400,7 +377,8 @@ function eliminarReservacion(res, id_transaccion, accion) {
         });
     } else if (accion == 'aprobar') {
         Transaccion.update({
-            tipo_transaccion: 'Prestamo'
+            tipo_transaccion: 'Prestamo',
+            esprestado: true
         }, {
                 where: {
                     id_transaccion: {
@@ -417,8 +395,113 @@ function eliminarReservacion(res, id_transaccion, accion) {
     }
 }
 
+let cargarBibliotecas = (res) => {
+    var htmlLibrary = htmlCode.tablaBiblioteca();
+    Biblioteca.findAll().then((library) => {
+        if (library.length > 0) {
+            library.forEach(element => {
+                htmlLibrary +=
+                    `<tr>
+                        <td>${verificarNullInformacion(element.id_biblioteca)}</td>
+                        <td>${verificarNullInformacion(element.nombre)}</td>
+                        <td>${verificarNullInformacion(element.direccion)}</td>
+                        <td>${verificarNullInformacion(element.correo)}</td>
+                        <td>${verificarNullInformacion(element.telefono)}</td>
+                        <td><button class="btn btn-danger btn-eliminar-biblioteca" onclick="pasarId(${element.id_biblioteca})"><i class="zmdi zmdi-delete"></i></button></td>
+                    </tr>`
+            });
+            htmlLibrary +=
+                `</tbody>
+                </table>
+                </div>`
+        }
+        res.render('institution', { libraries: htmlLibrary });
+    })
+}
 
-exports.eliminarReservacion = eliminarReservacion;
+function verificarNullInformacion(variable) {
+    return (variable == null) ? '--' : variable;
+}
+
+function accionBiblioteca(res, id_biblioteca) {
+    Biblioteca.destroy({
+        where: {
+            id_biblioteca: id_biblioteca
+        }
+    }).then(() => {
+        res.send();
+    }).catch((err) => {
+        console.log('ha ocurrido algo')
+    });
+
+}
+
+function accionSala(res, id_sala) {
+    Sala.destroy({
+        where: {
+            id_sala: id_sala
+        }
+    }).then(() => {
+        res.send();
+    }).catch((err) => {
+        console.log('ha ocurrido algo')
+    });
+
+}
+
+let cargarSala = (res) => {
+    var htmlRoom = htmlCode.tablaSala();
+    Sala.findAll().then((room) => {
+        Biblioteca.findAll().then((library) => {
+            if (room.length > 0) {
+                for (let i = 0; i < room.length; i++) {
+                    for (let j = 0; j < library.length; j++) {
+                        if (room[i].fk_biblioteca == library[j].id_biblioteca) {
+                            htmlRoom +=
+                                `<tr>
+                                    <td>${verificarNullInformacion(room[i].id_sala)}</td>
+                                    <td>${verificarNullInformacion(room[i].nombre)}</td>
+                                    <td>${verificarNullInformacion(library[j].nombre)}</td>
+                                    <td><button class="btn btn-danger btn-eliminar-sala" onclick="pasarId(${room[i].id_sala})"><i class="zmdi zmdi-delete"></i></button></td>
+                                </tr>`
+                        }
+                    }
+                }
+                htmlRoom += `</tbody></table></div>`
+            }
+            res.render('saloon', { salas: htmlRoom });
+        })
+    })
+}
+
+let cargarAgregarSala = (res) => {
+    let htmlBilioteca = '';
+    Biblioteca.findAll().then((biblioteca) => {
+        if (biblioteca.length > 0) {
+            biblioteca.forEach(element => {
+                htmlBilioteca += `<option value="${element.id_biblioteca}">${element.nombre}</option>`;
+            });
+        }
+        res.render('newsaloon', { bibliotecas: htmlBilioteca });
+    });
+}
+
+let agregarSala = (id_sala, nombre, fk_biblioteca) => {
+    Sala.create({
+        id_sala: id_sala,
+        nombre: nombre,
+        fk_biblioteca: fk_biblioteca
+    }).then(function(){
+
+    }).catch(function(err){
+        console.log('EERRROOORR ' + err)
+    })
+}
+
+exports.agregarSala = agregarSala
+exports.accionBiblioteca = accionBiblioteca;
+exports.cargarBibliotecas = cargarBibliotecas;
+exports.accionReservacion = accionReservacion;
 exports.chargeLoanReservation = chargeLoanReservation;
 exports.chargeLoanPending = chargeLoanPending;
 exports.chargeLoan = chargeLoan;
@@ -427,3 +510,7 @@ exports.startHome = startHome;
 exports.searchBook = searchBook;
 exports.newBook = newBook;
 exports.cargarAgregarLibro = cargarAgregarLibro;
+exports.newInstitution = newInstitution;
+exports.cargarSala = cargarSala;
+exports.accionSala = accionSala;
+exports.cargarAgregarSala = cargarAgregarSala;

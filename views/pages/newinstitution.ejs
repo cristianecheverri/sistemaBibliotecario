@@ -67,34 +67,34 @@
                         <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                             <div class="group-material">
                                 <input type="text" class="material-control tooltips-general" placeholder="Código de infraestructura" required="" pattern="[0-9]{1,10}"
-                                    maxlength="10" data-toggle="tooltip" data-placement="top" title="Solo números, máximo 10 caracteres">
+                                    maxlength="10" data-toggle="tooltip"  id="input-agregar-biblioteca-id" data-placement="top" title="Solo números, máximo 10 caracteres">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Código</label>
                             </div>
                             <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Nombre de la institución" required="" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{1,255}"
+                                <input type="text" class="material-control tooltips-general" id="input-agregar-biblioteca-nombre" placeholder="Nombre de la institución" required="" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{1,255}"
                                     maxlength="255" data-toggle="tooltip" data-placement="top" title="Escribe el nombre de la institución">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Nombre de la institución</label>
                             </div>
                             <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Dirección de la institución" pattern="{1,255}"
+                                <input type="text" class="material-control tooltips-general" id="input-agregar-biblioteca-direccion" placeholder="Dirección de la institución" pattern="{1,255}"
                                     maxlength="255" data-toggle="tooltip" data-placement="top" title="Escriba la dirección de la institución">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Direccion</label>
                             </div>
                             <div class="group-material">
-                                <input type="email" class="material-control tooltips-general" placeholder="Teléfono de la institución"
+                                <input type="email" class="material-control tooltips-general" id="input-agregar-biblioteca-correo" placeholder="Teléfono de la institución"
                                     maxlength="255" data-toggle="tooltip" data-placement="top" title="Escriba el correo de la institución">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Correo</label>
                             </div>
                             <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Teléfono" pattern="[0-9+()]{1,20}" maxlength="20"
+                                <input type="text" class="material-control tooltips-general" placeholder="Teléfono" id="input-agregar-biblioteca-telefono" pattern="[0-9+()]{1,20}" maxlength="20"
                                     data-toggle="tooltip" data-placement="top" title="Solo números">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
@@ -103,7 +103,7 @@
                             <p class="text-center">
                                 <button type="reset" class="btn btn-info" style="margin-right: 20px;">
                                     <i class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary btn-agregar-biblioteca">
                                     <i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
                             </p>
                         </div>
