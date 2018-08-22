@@ -1,6 +1,15 @@
 'use strict';
 var functions = require('./functions');
-const { Biblioteca, Sala, Estante, Categoria, Autor, Libro, Usuario, Transaccion } = require('../connection');
+const {
+    Biblioteca,
+    Sala,
+    Estante,
+    Categoria,
+    Autor,
+    Libro,
+    Usuario,
+    Transaccion
+} = require('../connection');
 
 module.exports = function (app) {
 
@@ -88,19 +97,45 @@ module.exports = function (app) {
     })
 
     app.get('/category', function (req, res) {
-        res.render('category'); //Show the registred categories
+        functions.cargarCategorias(res); //Show the registred categories
+    });
+
+    app.post('/category', function (req, res) {
+        var id_categoria = req.body.id_categoria;
+
+        functions.eliminarCategoria(res, id_categoria);
     });
 
     app.get('/newcategory', function (req, res) {
         res.render('newcategory'); //Lets add a new category
     });
 
+    app.post('/newcategory', function (req, res) {
+        var id_categoria = req.body.id_categoria;
+        var nombre = req.body.nombre;
+
+        functions.agregarCategoria(id_categoria, nombre, res);
+    });
+
     app.get('/shelf', function (req, res) {
-        res.render('shelf'); //Show the registred shelfs
+        functions.cargarEstantes(res) //Show the registred shelfs
+    });
+
+    app.post('/shelf', function (req, res) {
+        var id_estante = req.body.id_estante;
+
+        functions.eliminarEstantes(res, id_estante) //Show the registred shelfs
     });
 
     app.get('/newshelf', function (req, res) {
-        res.render('newshelf'); //Lets add a new shelf
+        functions.cargarAgregarEstante(res) //Lets add a new shelf
+    });
+
+    app.post('/newshelf', function (req, res) {
+        var id_estante = req.body.id_estante;
+        var fk_sala = req.body.fk_sala;
+
+        functions.agregarEstante(res, id_estante, fk_sala) //Lets add a new shelf
     });
 
     app.get('/catalog', function (req, res) {

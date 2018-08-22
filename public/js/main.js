@@ -115,6 +115,52 @@ $(document).ready(function () {
         });
     });
 
+    $('.btn-agregar-categoria').click(function (e) {
+        e.preventDefault();
+
+        var agregarCategoria = {};
+        agregarCategoria.id_categoria = $('#input-agregar-categoria-id').val();
+        agregarCategoria.nombre = $('#input-agregar-categoria-nombre').val();
+
+        $.ajax({
+            type: 'POST',
+            data: JSON.stringify(agregarCategoria),
+            contentType: 'application/json',
+            url: 'http://localhost:4001/newcategory',
+            success:
+                swal({
+                    icon: "success",
+                    type: "success",
+                    title: 'Categoria agregada correctamente'
+                }, function () {
+                    window.location.reload(true);
+                })
+        });
+    });
+
+    $('.btn-agregar-estante').click(function (e) {
+        e.preventDefault();
+
+        var agregarEstante = {};
+        agregarEstante.id_estante = $('#input-agregar-estante-id').val();
+        agregarEstante.fk_sala = $('#input-agregar-estante-sala').val();
+
+        $.ajax({
+            type: 'POST',
+            data: JSON.stringify(agregarEstante),
+            contentType: 'application/json',
+            url: 'http://localhost:4001/newshelf',
+            success:
+                swal({
+                    icon: "success",
+                    type: "success",
+                    title: 'Estante agregada correctamente'
+                }, function () {
+                    window.location.reload(true);
+                })
+        });
+    });
+
     $('.btn-agregar-sala').click(function (e) {
         e.preventDefault();
 
@@ -221,6 +267,68 @@ $(document).ready(function () {
                 url: 'http://localhost:4001/saloon',
                 success: function (data) {
                     window.location.reload(true);
+                },
+                error: function (err) {
+                    console.log('error ' + err)
+                }
+
+            });
+        });
+    });
+
+    $('.btn-eliminar-categoria').click(function () {
+        swal({
+            title: "¿Seguro que quieres eliminar esta categoría?",
+            text: "Esta acción ya no se podrá deshacer, Así que piénsalo bien.",
+            type: "error",
+            showCancelButton: true,
+            confirmButtonColor: '#FF2301',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, estoy seguro',
+            cancelButtonText: "Cancelar"
+        }, function () {
+
+            var categoria = {};
+            categoria.id_categoria = id;
+
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(categoria),
+                contentType: 'application/json',
+                url: 'http://localhost:4001/category',
+                success: function (data) {
+                    window.location.reload();
+                },
+                error: function (err) {
+                    console.log('error ' + err)
+                }
+
+            });
+        });
+    });
+
+    $('.btn-eliminar-estante').click(function () {
+        swal({
+            title: "¿Seguro que quieres eliminar este estante?",
+            text: "Esta acción ya no se podrá deshacer, Así que piénsalo bien.",
+            type: "error",
+            showCancelButton: true,
+            confirmButtonColor: '#FF2301',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, estoy seguro',
+            cancelButtonText: "Cancelar"
+        }, function () {
+
+            var estante = {};
+            estante.id_estante = id;
+
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(estante),
+                contentType: 'application/json',
+                url: 'http://localhost:4001/shelf',
+                success: function (data) {
+                    window.location.reload();
                 },
                 error: function (err) {
                     console.log('error ' + err)

@@ -1,4 +1,14 @@
-const { Biblioteca, Sala, Estante, Categoria, Estante_Categoria, Autor, Libro, Usuario, Transaccion } = require('../connection');
+const {
+    Biblioteca,
+    Sala,
+    Estante,
+    Categoria,
+    Estante_Categoria,
+    Autor,
+    Libro,
+    Usuario,
+    Transaccion
+} = require('../connection');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const htmlCode = require('./html')
@@ -16,9 +26,17 @@ function startHome(res) {
     var cantidadPrestamos = 0;
     //var fechaHoy = new Date().getTime();
 
-    Usuario.findAll({ where: { tipo_usuario: 'Administrador' } }).then(function (admin) {
+    Usuario.findAll({
+        where: {
+            tipo_usuario: 'Administrador'
+        }
+    }).then(function (admin) {
         cantidadAdministradores = admin.length;
-        Usuario.findAll({ where: { tipo_usuario: 'Usuario corriente' } }).then(function (user) {
+        Usuario.findAll({
+            where: {
+                tipo_usuario: 'Usuario corriente'
+            }
+        }).then(function (user) {
             cantidadUsuariosCorrientes = user.length;
             Libro.findAll().then(function (book) {
                 cantidadLibros = book.length;
@@ -26,11 +44,29 @@ function startHome(res) {
                     cantidadCategorias = category.length;
                     Estante.findAll().then(function (shelf) {
                         cantidadEstantes = shelf.length;
-                        Transaccion.findAll({ where: { tipo_transaccion: 'Reservacion' } }).then(function (reservation) {
+                        Transaccion.findAll({
+                            where: {
+                                tipo_transaccion: 'Reservacion'
+                            }
+                        }).then(function (reservation) {
                             cantidadReservaciones = reservation.length;
-                            Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo', fecha_devolucion: { [Op.gte]: fechaHoy } } }).then(function (loanpending) {
+                            Transaccion.findAll({
+                                where: {
+                                    tipo_transaccion: 'Prestamo',
+                                    fecha_devolucion: {
+                                        [Op.gte]: fechaHoy
+                                    }
+                                }
+                            }).then(function (loanpending) {
                                 cantidadDevolucionesPendientes = loanpending.length;
-                                Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo', fecha_devolucion: { [Op.lt]: fechaHoy } } }).then(function (loan) {
+                                Transaccion.findAll({
+                                    where: {
+                                        tipo_transaccion: 'Prestamo',
+                                        fecha_devolucion: {
+                                            [Op.lt]: fechaHoy
+                                        }
+                                    }
+                                }).then(function (loan) {
                                     cantidadPrestamos = loan.length;
 
                                     res.render('home', {
@@ -60,7 +96,9 @@ function listBooks(res) {
     var autor;
     var i, j;
 
-    Libro.findAll({ order: ['id_libro'] }).then(function (book) {
+    Libro.findAll({
+        order: ['id_libro']
+    }).then(function (book) {
         libro = book;
         Autor.findAll().then(function (author) {
             autor = author;
@@ -74,7 +112,9 @@ function listBooks(res) {
                     }
                 }
             }
-            res.render('catalog', { libros: html }); //Show all the added books
+            res.render('catalog', {
+                libros: html
+            }); //Show all the added books
         });
     });
 }
@@ -83,7 +123,13 @@ function searchBook(res, libroABuscar, id) {
     var htmlLibrosBusqueda = '<h3 class="text-center all-tittles">resultados de la búsqueda</h3>';
     var librosEncontrados;
     var autores;
-    Libro.findAll({ where: { nombre: { [Op.iLike]: `%${libroABuscar}%` } } }).then(function (books) {
+    Libro.findAll({
+        where: {
+            nombre: {
+                [Op.iLike]: `%${libroABuscar}%`
+            }
+        }
+    }).then(function (books) {
         librosEncontrados = books;
         Autor.findAll().then(function (author) {
             autores = author;
@@ -130,7 +176,9 @@ function cargarAgregarLibro(res) {
     var htmlAutor = '';
     var htmlEstanteCategoria = '';
 
-    Autor.findAll({ order: ['id_autor'] }).then(function (author) {
+    Autor.findAll({
+        order: ['id_autor']
+    }).then(function (author) {
         autores = author;
         Estante_Categoria.findAll().then(function (estantes_categorias) {
             estante_categoria = estantes_categorias;
@@ -154,7 +202,10 @@ function cargarAgregarLibro(res) {
                             }
                         }
                     }
-                    res.render('newbook', { autor: htmlAutor, estantes: htmlEstanteCategoria });
+                    res.render('newbook', {
+                        autor: htmlAutor,
+                        estantes: htmlEstanteCategoria
+                    });
                 });
             });
         });
@@ -215,7 +266,12 @@ function chargeLoan(res) {
             <tbody>`
     var libro;
     var usuario;
-    Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo', esprestado: false } }).then(function (loan) {
+    Transaccion.findAll({
+        where: {
+            tipo_transaccion: 'Prestamo',
+            esprestado: false
+        }
+    }).then(function (loan) {
         Libro.findAll().then(function (books) {
             libro = books;
             Usuario.findAll().then(function (users) {
@@ -246,7 +302,9 @@ function chargeLoan(res) {
                 } else {
                     htmlLoan = '<h1 class="text-center">No hay registro de prestamos en este momento</h1>'
                 }
-                res.render('loan', { loans: htmlLoan });
+                res.render('loan', {
+                    loans: htmlLoan
+                });
             })
         })
     })
@@ -272,7 +330,12 @@ function chargeLoanPending(res) {
     var libro;
     var usuario;
     var color;
-    Transaccion.findAll({ where: { tipo_transaccion: 'Prestamo', esprestado: true } }).then(function (loan) {
+    Transaccion.findAll({
+        where: {
+            tipo_transaccion: 'Prestamo',
+            esprestado: true
+        }
+    }).then(function (loan) {
         Libro.findAll().then(function (books) {
             libro = books;
             Usuario.findAll().then(function (users) {
@@ -302,7 +365,9 @@ function chargeLoanPending(res) {
                 } else {
                     htmlLoan = '<h1 class="text-center">No hay registro de prestamos sin devolver en este momento</h1>'
                 }
-                res.render('loanpending', { loans: htmlLoan });
+                res.render('loanpending', {
+                    loans: htmlLoan
+                });
             })
         })
     })
@@ -327,7 +392,11 @@ function chargeLoanReservation(res) {
             <tbody>`;
     var libro;
     var usuario;
-    Transaccion.findAll({ where: { tipo_transaccion: 'Reservacion' } }).then(function (loan) {
+    Transaccion.findAll({
+        where: {
+            tipo_transaccion: 'Reservacion'
+        }
+    }).then(function (loan) {
         Libro.findAll().then(function (books) {
             libro = books;
             Usuario.findAll().then(function (users) {
@@ -359,7 +428,9 @@ function chargeLoanReservation(res) {
                 } else {
                     htmlLoan = '<h1 class="text-center">No hay registro de reservaciones en este momento</h1>'
                 }
-                res.render('loanreservation', { loans: htmlLoan });
+                res.render('loanreservation', {
+                    loans: htmlLoan
+                });
             })
         })
     })
@@ -381,16 +452,16 @@ function accionReservacion(res, id_transaccion, accion) {
             tipo_transaccion: 'Prestamo',
             esprestado: true
         }, {
-                where: {
-                    id_transaccion: {
-                        [Op.eq]: id_transaccion
-                    }
+            where: {
+                id_transaccion: {
+                    [Op.eq]: id_transaccion
                 }
-            }).then(() => {
-                res.send();
-            }).catch((err) => {
+            }
+        }).then(() => {
+            res.send();
+        }).catch((err) => {
 
-            });
+        });
     } else {
         console.log('Algo pasa')
     }
@@ -413,16 +484,16 @@ function accionPrestamosPendientes(res, id_transaccion, accion) {
             esprestado: false,
             fecha_devolucion: new Date().getTime()
         }, {
-                where: {
-                    id_transaccion: {
-                        [Op.eq]: id_transaccion
-                    }
+            where: {
+                id_transaccion: {
+                    [Op.eq]: id_transaccion
                 }
-            }).then(() => {
-                res.send();
-            }).catch((err) => {
+            }
+        }).then(() => {
+            res.send();
+        }).catch((err) => {
 
-            });
+        });
     } else {
         console.log('Algo pasa')
     }
@@ -448,7 +519,9 @@ let cargarBibliotecas = (res) => {
                 </table>
                 </div>`
         }
-        res.render('institution', { libraries: htmlLibrary });
+        res.render('institution', {
+            libraries: htmlLibrary
+        });
     })
 }
 
@@ -502,7 +575,9 @@ let cargarSala = (res) => {
                 }
                 htmlRoom += `</tbody></table></div>`
             }
-            res.render('saloon', { salas: htmlRoom });
+            res.render('saloon', {
+                salas: htmlRoom
+            });
         })
     })
 }
@@ -515,7 +590,9 @@ let cargarAgregarSala = (res) => {
                 htmlBilioteca += `<option value="${element.id_biblioteca}">${element.nombre}</option>`;
             });
         }
-        res.render('newsaloon', { bibliotecas: htmlBilioteca });
+        res.render('newsaloon', {
+            bibliotecas: htmlBilioteca
+        });
     });
 }
 
@@ -531,7 +608,120 @@ let agregarSala = (id_sala, nombre, fk_biblioteca) => {
     })
 }
 
-exports.agregarSala = agregarSala
+let cargarCategorias = (res) => {
+    var htmlTablaCategorias = htmlCode.tablaCategoria();
+    Categoria.findAll().then((categorias) => {
+        if (categorias.length > 0) {
+            categorias.forEach(categoria => {
+                htmlTablaCategorias +=
+                    `<tr>
+                    <td>${categoria.id_categoria}</td>
+                    <td>${categoria.nombre}</td>
+                    <td><button class="btn btn-danger btn-eliminar-categoria" onclick="pasarId(${categoria.id_categoria})"><i class="zmdi zmdi-delete"></i></button></td>
+                </tr>`
+            });
+            htmlTablaCategorias += `</tbody></table></div>`
+        }
+        res.render('category', {
+            categorias: htmlTablaCategorias
+        })
+    })
+}
+
+let eliminarCategoria = (res, id_categoria) => {
+    Categoria.destroy({
+        where: {
+            id_categoria: id_categoria
+        }
+    }).then(() => {
+        res.send();
+    }).catch((err) => {
+        console.log('Error ' + err)
+    })
+}
+
+let agregarCategoria = (id_categoria, nombre, res) => {
+    Categoria.create({
+        id_categoria: id_categoria,
+        nombre: nombre
+    }).then(() => {
+
+    }).catch((err) => {
+        console.log('Ha ocurrido un error ' + err)
+    })
+}
+
+let cargarEstantes = (res) => {
+    var tablaEstante = htmlCode.tablaEstante();
+    Estante.findAll().then((shelf) => {
+        Sala.findAll().then((room) => {
+            if (shelf.length > 0) {
+                for (let i = 0; i < shelf.length; i++) {
+                    for (let j = 0; j < room.length; j++) {
+                        if (shelf[i].fk_sala == room[j].id_sala) {
+                            tablaEstante +=
+                                `<tr>
+                                    <td>${verificarNullInformacion(shelf[i].id_estante)}</td>
+                                    <td>${verificarNullInformacion(room[j].nombre)}</td>
+                                    <td><button class="btn btn-danger btn-eliminar-estante" onclick="pasarId(${shelf[i].id_estante})"><i class="zmdi zmdi-delete"></i></button></td>
+                                </tr>`
+                        }
+                    }
+                }
+                tablaEstante += `</tbody></table></div>`
+            }
+            res.render('shelf', {
+                estantes: tablaEstante
+            })
+        })
+    })
+}
+
+let eliminarEstantes = (res, id_estante) => {
+    Estante.destroy({
+        where: {
+            id_estante: id_estante
+        }
+    }).then(() => {
+        res.send()
+    }).catch((err) => {
+        console.log('Error ' + err);
+    })
+}
+
+let cargarAgregarEstante = (res) => {
+    var htmlSala = '';
+    Sala.findAll().then((room) => {
+        if (room.length > 0) {
+            for (let i = 0; i < room.length; i++) {
+                htmlSala += `<option value="${room[i].id_sala}">${room[i].nombre}</option>`;
+            }
+        }
+        res.render('newshelf', {
+            sala: htmlSala
+        })
+    })
+}
+
+let agregarEstante = (res, id_estante, fk_sala) => {
+    Estante.create({
+        id_estante: id_estante,
+        fk_sala: fk_sala
+    }).then(() => {
+
+    }).catch((err) => {
+        console.log('Ha ocurrido un error ' + err)
+    })
+}
+
+exports.agregarEstante = agregarEstante;
+exports.cargarAgregarEstante = cargarAgregarEstante;
+exports.eliminarEstantes = eliminarEstantes;
+exports.cargarEstantes = cargarEstantes;
+exports.agregarCategoria = agregarCategoria;
+exports.eliminarCategoria = eliminarCategoria;
+exports.cargarCategorias = cargarCategorias;
+exports.agregarSala = agregarSala;
 exports.accionBiblioteca = accionBiblioteca;
 exports.cargarBibliotecas = cargarBibliotecas;
 exports.accionReservacion = accionReservacion;

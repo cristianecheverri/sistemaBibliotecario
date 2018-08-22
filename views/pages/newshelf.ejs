@@ -67,20 +67,21 @@
                     <div class="row">
                        <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                             <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Escribe aquí el código del estante"  required="" pattern="[0-9]{1,20}" maxlength="20" data-toggle="tooltip" data-placement="top" title="Solo números, máximo 20 caracteres">
+                                <input type="text" class="material-control tooltips-general" id="input-agregar-estante-id" placeholder="Escribe aquí el código del estante"  required="" pattern="[0-9]{1,20}" maxlength="20" data-toggle="tooltip" data-placement="top" title="Solo números, máximo 20 caracteres">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label>Código de estante</label>
-                            </div>
+                            </div> 
                             <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Escribe aquí el código de la sala" required="" pattern="[a-zA-z0-9áéíóúÁÉÍÓÚñÑ ]{1,50}" maxlength="50" data-toggle="tooltip" data-placement="top" title="Escribe el código de la sala">
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Sala</label>
-                            </div>                      
+                                <span>Sala</span>
+                                <select class="tooltips-general material-control" id="input-agregar-estante-sala" data-toggle="tooltip" data-placement="top" title="Elige la sala">
+                                    <option value="0" disabled="" selected="">Seleccione una sala</option>
+                                    <%- sala %>
+                                </select>
+                            </div>                     
                             <p class="text-center">
                                 <button type="reset" class="btn btn-info" style="margin-right: 20px;"><i class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
-                                <button type="submit" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
+                                <button type="submit" class="btn btn-primary btn-agregar-estante"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
                             </p> 
                        </div>
                    </div>

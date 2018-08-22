@@ -47,6 +47,34 @@ let tablaSala = () => {
                 <tbody>`
 }
 
+let tablaCategoria = () => {
+    return `<div class="table-responsive">
+                <table class="table table-hover text-center">
+                    <thead>
+                        <tr class="success">
+                            <th class="text-center">Código</th>
+                            <th class="text-center">Nombre</th>
+                            <th class="text-center">Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>`
+}
+
+let tablaEstante = () => {
+    return `<div class="table-responsive">
+                <table class="table table-hover text-center">
+                    <thead>
+                        <tr class="success">
+                            <th class="text-center">Código</th>
+                            <th class="text-center">Nombre</th>
+                            <th class="text-center">Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>`
+}
+
+exports.tablaEstante = tablaEstante;
 exports.tablaBiblioteca = tablaBiblioteca;
 exports.mostrarLibros = mostrarLibros;
 exports.tablaSala = tablaSala;
+exports.tablaCategoria = tablaCategoria;
