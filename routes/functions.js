@@ -46,25 +46,22 @@ function startHome(res) {
                         cantidadEstantes = shelf.length;
                         Transaccion.findAll({
                             where: {
-                                tipo_transaccion: 'Reservacion'
+                                tipo_transaccion: 'Reservacion',
+                                esprestado: false
                             }
                         }).then(function (reservation) {
                             cantidadReservaciones = reservation.length;
                             Transaccion.findAll({
                                 where: {
                                     tipo_transaccion: 'Prestamo',
-                                    fecha_devolucion: {
-                                        [Op.gte]: fechaHoy
-                                    }
+                                    esprestado: true
                                 }
                             }).then(function (loanpending) {
                                 cantidadDevolucionesPendientes = loanpending.length;
                                 Transaccion.findAll({
                                     where: {
                                         tipo_transaccion: 'Prestamo',
-                                        fecha_devolucion: {
-                                            [Op.lt]: fechaHoy
-                                        }
+                                        esprestado: false
                                     }
                                 }).then(function (loan) {
                                     cantidadPrestamos = loan.length;
@@ -452,16 +449,16 @@ function accionReservacion(res, id_transaccion, accion) {
             tipo_transaccion: 'Prestamo',
             esprestado: true
         }, {
-            where: {
-                id_transaccion: {
-                    [Op.eq]: id_transaccion
+                where: {
+                    id_transaccion: {
+                        [Op.eq]: id_transaccion
+                    }
                 }
-            }
-        }).then(() => {
-            res.send();
-        }).catch((err) => {
+            }).then(() => {
+                res.send();
+            }).catch((err) => {
 
-        });
+            });
     } else {
         console.log('Algo pasa')
     }
@@ -484,16 +481,16 @@ function accionPrestamosPendientes(res, id_transaccion, accion) {
             esprestado: false,
             fecha_devolucion: new Date().getTime()
         }, {
-            where: {
-                id_transaccion: {
-                    [Op.eq]: id_transaccion
+                where: {
+                    id_transaccion: {
+                        [Op.eq]: id_transaccion
+                    }
                 }
-            }
-        }).then(() => {
-            res.send();
-        }).catch((err) => {
+            }).then(() => {
+                res.send();
+            }).catch((err) => {
 
-        });
+            });
     } else {
         console.log('Algo pasa')
     }
@@ -714,6 +711,83 @@ let agregarEstante = (res, id_estante, fk_sala) => {
     })
 }
 
+let cargarEstanteCategoria = (res) => {
+    var tablaEstanteCategoria = htmlCode.tablaEstanteCategoria();
+    Estante_Categoria.findAll().then((shelf_cat) => {
+        Estante.findAll().then((shelf) => {
+            Categoria.findAll().then((category) => {
+                if (shelf_cat.length > 0) {
+                    for (let i = 0; i < shelf_cat.length; i++) {
+                        for (let j = 0; j < shelf.length; j++) {
+                            for (let k = 0; k < category.length; k++) {
+                                if (shelf_cat[i].fk_estante == shelf[j].id_estante && shelf_cat[i].fk_categoria == category[k].id_categoria) {
+                                    tablaEstanteCategoria +=
+                                        `<tr>
+                                        <td>${verificarNullInformacion(shelf_cat[i].id_estante_categoria)}</td>
+                                        <td>Estante ${verificarNullInformacion(shelf[j].id_estante)}</td>
+                                        <td>${verificarNullInformacion(category[k].nombre)}</td>
+                                        <td><button class="btn btn-danger btn-eliminar-estante-categoria" onclick="pasarId(${shelf_cat[i].id_estante_categoria})"><i class="zmdi zmdi-delete"></i></button></td>
+                                    </tr>`
+                                }
+                            }
+                        }
+                    }
+                    tablaEstanteCategoria += `</tbody></table></div>`
+                }
+                res.render('shelf-category', { estantescategoria: tablaEstanteCategoria })
+            })
+        })
+    })
+}
+
+let eliminarEstanteCategoria = (res, id_estante_categoria) => {
+    Estante_Categoria.destroy({
+        where: {
+            id_estante_categoria: id_estante_categoria
+        }
+    }).then(() => {
+        res.send()
+    }).catch((err) => {
+        console.log('Error ' + err)
+    })
+}
+
+let cargarAgregarEstanteCategoria = (res) => {
+    var optionestante = '';
+    var optioncategoria = '';
+    Estante.findAll().then((shelf) => {
+        Categoria.findAll().then((category) => {
+            if (shelf.length > 0) {
+                for (let i = 0; i < shelf.length; i++) {
+                    optionestante += `<option value="${shelf[i].id_estante}">Estante ${shelf[i].id_estante}</option>`;
+                }
+            }
+            if (category.length > 0) {
+                for (let j = 0; j < category.length; j++) {
+                    optioncategoria += `<option value="${category[j].id_categoria}">${category[j].nombre}</option>`;
+                }
+            }
+            res.render('newshelf-category', { estante: optionestante, categoria: optioncategoria })
+        })
+    })
+}
+
+let agregarEstanteCategoria =(res, id_estante_categoria, fk_estante, fk_categoria) => {
+    Estante_Categoria.create({
+        id_estante_categoria: id_estante_categoria,
+        fk_estante: fk_estante,
+        fk_categoria: fk_categoria
+    }).then(() => {
+        res.send();
+    }).catch((err) => {
+        console.log('Erorr ' + err)
+    })
+}
+
+exports.agregarEstanteCategoria = agregarEstanteCategoria;
+exports.cargarAgregarEstanteCategoria = cargarAgregarEstanteCategoria;
+exports.eliminarEstanteCategoria = eliminarEstanteCategoria;
+exports.cargarEstanteCategoria = cargarEstanteCategoria;
 exports.agregarEstante = agregarEstante;
 exports.cargarAgregarEstante = cargarAgregarEstante;
 exports.eliminarEstantes = eliminarEstantes;

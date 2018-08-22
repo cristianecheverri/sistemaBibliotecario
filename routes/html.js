@@ -73,6 +73,21 @@ let tablaEstante = () => {
                     <tbody>`
 }
 
+let tablaEstanteCategoria = () => {
+    return `<div class="table-responsive">
+                <table class="table table-hover text-center">
+                    <thead>
+                        <tr class="success">
+                            <th class="text-center">Código</th>
+                            <th class="text-center">Estante</th>
+                            <th class="text-center">Categoria</th>
+                            <th class="text-center">Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>`
+}
+
+exports.tablaEstanteCategoria = tablaEstanteCategoria;
 exports.tablaEstante = tablaEstante;
 exports.tablaBiblioteca = tablaBiblioteca;
 exports.mostrarLibros = mostrarLibros;

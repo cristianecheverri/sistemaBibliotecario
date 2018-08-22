@@ -138,6 +138,27 @@ module.exports = function (app) {
         functions.agregarEstante(res, id_estante, fk_sala) //Lets add a new shelf
     });
 
+    app.get('/shelf-category', function (req, res) {
+        functions.cargarEstanteCategoria(res) //Lets add a new shelf
+    });
+
+    app.get('/newshelf-category', function (req, res) {
+        functions.cargarAgregarEstanteCategoria(res)
+    });
+
+    app.post('/newshelf-category', function (req, res) {
+        var id_estante_categoria = req.body.id_estante_categoria;
+        var fk_estante = req.body.fk_estante;
+        var fk_categoria = req.body.fk_categoria;
+
+        functions.agregarEstanteCategoria(res, id_estante_categoria, fk_estante, fk_categoria);
+    });
+
+    app.post('/shelf-category', function (req, res) {
+        var id_estante_categoria = req.body.id_estante_categoria;
+        functions.eliminarEstanteCategoria(res, id_estante_categoria) //Lets add a new shelf
+    });
+
     app.get('/catalog', function (req, res) {
         functions.listBooks(res);
     });

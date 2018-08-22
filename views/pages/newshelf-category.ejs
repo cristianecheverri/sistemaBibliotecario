@@ -2,8 +2,7 @@
 <html lang="es">
 
 <head>
-    <title>Nuevo estante</title>
-    <link rel="stylesheet" href="css/institution.css">
+    <title>Estantes - Categorías</title>
 
     <% include ../partials/head %>
 
@@ -20,7 +19,7 @@
 
         <div class="container">
             <div class="page-header">
-                <h1 class="all-tittles">Agregar nuevo estante</h1>
+                <h1 class="all-tittles">Estantes - Categorias</h1>
             </div>
         </div>
         <div class="container-fluid">
@@ -34,11 +33,11 @@
                 <li role="presentation">
                     <a href="category">Categorías</a>
                 </li>
-                <li role="presentation" class="active">
-                    <a>Estantes</a>
-                </li>
                 <li role="presentation">
-                    <a href="shelf-category">Estantes - Categorías</a>
+                    <a href="shelf">Estantes</a>
+                </li>
+                <li role="presentation" class="active">
+                    <a>Estantes - Categorias</a>
                 </li>
             </ul>
         </div>
@@ -48,7 +47,8 @@
                     <img src="assets/img/section.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
                 </div>
                 <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
-                   Aquí puedes agregar un nuevo estante y relacionar en qué sala se encuentra. Debes llenar los dos compos para registrar el estante.
+                   Bienvenido a la sección de agregar estante - categoria, aquí puedes añadir nuevos estante - categoria a la base de datos.
+                    Puedes ver los estantes - categoria que ya tienes en el botón <strong>Estantes - categorias</strong>
                 </div>
 
             </div>
@@ -57,37 +57,44 @@
             <div class="row">
                 <div class="col-xs-12 lead">
                     <ol class="breadcrumb">
-                      <li><a href="shelf">Estantes</a></li>
-                      <li class="active">Nuevo estante</li>
+                      <li><a href="shelf-category">Estantes - categorias</a></li>
+                      <li class="active">Nuevo estante - categoria</li>
                     </ol>
                 </div>
             </div>
         </div>
         <div class="container-fluid">
             <div class="container-flat-form">
-                <div class="title-flat-form title-flat-blue">Agregar un nuevo estante</div>
-                <form>
+                <div class="title-flat-form title-flat-blue">Agregar un nuevo estante - categoría</div>
+                <form autocomplete="off">
                     <div class="row">
                        <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                             <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" id="input-agregar-estante-id" placeholder="Escribe aquí el código del estante"  required="" pattern="[0-9]{1,20}" maxlength="20" data-toggle="tooltip" data-placement="top" title="Solo números, máximo 20 caracteres">
+                                <input type="text" class="material-control tooltips-general" id="input-agregar-estante-categoria-id" placeholder="Escribe aquí el código de categoría"  required="" pattern="[0-9]{1,20}" maxlength="20" data-toggle="tooltip" data-placement="top" title="Solo números, máximo 20 caracteres">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
-                                <label>Código de estante</label>
-                            </div> 
+                                <label>Código de estante - categoría</label>
+                            </div>
                             <div class="group-material">
-                                <span>Sala</span>
-                                <select class="tooltips-general material-control" id="input-agregar-estante-sala" data-toggle="tooltip" data-placement="top" title="Elige la sala">
-                                    <option value="0" disabled="" selected="">Seleccione una sala</option>
-                                    <%- sala %>
+                                <span>Estante</span>
+                                <select class="tooltips-general material-control" id="input-agregar-estante-categoria-estante" data-toggle="tooltip" data-placement="top" title="Elige el estante">
+                                    <option value="0" disabled="" selected="">Seleccione un estante</option>
+                                    <%- estante %>
                                 </select>
-                            </div>                     
+                            </div>
+                            <div class="group-material">
+                                <span>Categoria</span>
+                                <select class="tooltips-general material-control" id="input-agregar-estante-categoria-categoria" data-toggle="tooltip" data-placement="top" title="Elige la categoria">
+                                    <option value="0" disabled="" selected="">Seleccione una categoria</option>
+                                    <%- categoria %>
+                                </select>
+                            </div>
                             <p class="text-center">
                                 <button type="reset" class="btn btn-info" style="margin-right: 20px;"><i class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
-                                <button type="submit" class="btn btn-primary btn-agregar-estante"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
+                                <button type="submit" class="btn btn-primary btn-agregar-estante-categoria"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
                             </p> 
                        </div>
-                   </div>
+                    </div>
                 </form>
             </div>
         </div>

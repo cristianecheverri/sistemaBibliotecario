@@ -185,6 +185,30 @@ $(document).ready(function () {
         });
     });
 
+    $('.btn-agregar-estante-categoria').click(function (e) {
+        e.preventDefault();
+
+        var agregarEstanteCategoria = {};
+        agregarEstanteCategoria.id_estante_categoria = $('#input-agregar-estante-categoria-id').val();
+        agregarEstanteCategoria.fk_estante = $('#input-agregar-estante-categoria-estante').val();
+        agregarEstanteCategoria.fk_categoria = $('#input-agregar-estante-categoria-categoria').val();
+
+        $.ajax({
+            type: 'POST',
+            data: JSON.stringify(agregarEstanteCategoria),
+            contentType: 'application/json',
+            url: 'http://localhost:4001/newshelf-category',
+            success:
+                swal({
+                    icon: "success",
+                    type: "success",
+                    title: 'Estante - Categoria agregada correctamente'
+                }, function () {
+                    window.location.reload(true);
+                })
+        });
+    });
+
     $('.btn-eliminar-transaccion').click(function () {
         swal({
             title: "¿Seguro que quieres eliminar esta transacción?",
@@ -206,6 +230,34 @@ $(document).ready(function () {
                 data: JSON.stringify(transaccion),
                 contentType: 'application/json',
                 url: 'http://localhost:4001/loanreservation',
+                success: function (data) {
+                    window.location.reload(true);
+                },
+
+            });
+        });
+    });
+
+    $('.btn-eliminar-estante-categoria').click(function () {
+        swal({
+            title: "¿Seguro que quieres eliminar este estante - categoria?",
+            text: "Esta acción ya no se podrá deshacer, Así que piénsalo bien.",
+            type: "error",
+            showCancelButton: true,
+            confirmButtonColor: '#FF2301',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, estoy seguro',
+            cancelButtonText: "Cancelar"
+        }, function () {
+
+            var estantecategoria = {};
+            estantecategoria.id_estante_categoria = id;
+
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(estantecategoria),
+                contentType: 'application/json',
+                url: 'http://localhost:4001/shelf-category',
                 success: function (data) {
                     window.location.reload(true);
                 },

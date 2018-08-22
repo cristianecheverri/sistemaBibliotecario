@@ -2,7 +2,7 @@
 <html lang="es">
 
 <head>
-    <title>Categorías</title>
+    <title>Estantes - Categorías</title>
 
     <% include ../partials/head %>
 
@@ -19,7 +19,7 @@
 
         <div class="container">
             <div class="page-header">
-                <h1 class="all-tittles">Categorías</h1>
+                <h1 class="all-tittles">Estantes - Categorias</h1>
             </div>
         </div>
         <div class="container-fluid">
@@ -30,24 +30,24 @@
                 <li role="presentation">
                     <a href="saloon">Salas</a>
                 </li>
-                <li role="presentation" class="active">
-                    <a>Categorías</a>
+                <li role="presentation">
+                    <a href="category">Categorías</a>
                 </li>
                 <li role="presentation">
                     <a href="shelf">Estantes</a>
                 </li>
-                <li role="presentation">
-                    <a href="shelf-category">Estantes - Categorías</a>
+                <li role="presentation" class="active">
+                    <a>Estantes - Categorias</a>
                 </li>
             </ul>
         </div>
         <div class="container-fluid" style="margin: 50px 0;">
             <div class="row">
                 <div class="col-xs-12 col-sm-4 col-md-3">
-                    <img src="assets/img/category.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
+                    <img src="assets/img/section.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
                 </div>
                 <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
-                    Aquí puedes ver las categorías que tienes registradas. Puedes añadir nuevas categorías en el botón <strong>Nueva categoría</strong>
+                    Aquí puedes ver las categorias que tienes asignadas a los estantes. Puedes añadir nuevos estantes - categorias en el botón <strong>Nuevo estante - categorias</strong>
                 </div>
 
             </div>
@@ -56,16 +56,17 @@
             <div class="row">
                 <div class="col-xs-12 lead">
                     <ol class="breadcrumb">
-                      <li class="active">Categorías</li>
-                      <li><a href="newcategory">Nueva categoría</a></li>
+                      <li class="active">Estantes - categorias</li>
+                      <li><a href="newshelf-category">Nuevo estante - categoria</a></li>
                     </ol>
                 </div>
             </div>
         </div>
         <div class="container-fluid">
-            <h2 class="text-center all-tittles">Listado de categorías</h2>
+            <h2 class="text-center all-tittles">Listado de estantes - categoria</h2>
             
-            <%- categorias %>
+            <%- estantescategoria %>
+
         </div>
 
         <% include ../partials/modalhelp %>
