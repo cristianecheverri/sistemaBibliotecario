@@ -487,7 +487,7 @@ function chargeLoanReservation(res) {
                 } else {
                     htmlLoan = '<h1 class="text-center">No hay registro de reservaciones en este momento</h1>'
                 }
-                res.redirect('loanreservation');
+                res.render('loanreservation', {loans: htmlLoan});
             })
         })
     })
@@ -981,7 +981,7 @@ let infoBook = (res, id_libro) => {
         libro = book
         console.log(libro.length)
         if (libro.length > 0) {
-            
+
         }
         htmlBook = `<h1>${libro.nombre}</h1>`
 
@@ -996,8 +996,8 @@ let infoBook = (res, id_libro) => {
                 id_autor: libro.fk_autor
             }
         }).then((author) => {
-            
-            
+
+
 
         })
         */
