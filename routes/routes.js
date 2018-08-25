@@ -8,20 +8,33 @@ const {
     Autor,
     Libro,
     Usuario,
-    Transaccion
+    Transaccion, 
+    sequelize
 } = require('../connection');
 
 module.exports = function (app) {
+
+    // app.use(function (req, res, next) {
+    //     if (!(req.url == '/favicon.ico' || req.url == '/home')) {
+    //         functions.verificar(req, res, next);
+    //     }
+    //     else {
+    //         next();
+    //     }
+    // });
 
     app.get('/', function (req, res) {
         res.render('index'); //Show login
     });
 
-    // app.post('/', function (req, res) {
-    //     //req.session.nombre = req.body.nombre;
-    //     //res.redirect('home'); //Show login
-    //     res.send('post')
-    // });
+    app.post('/', function (req, res, ) {
+        var documento = req.body.documento;
+        var contrasena = req.body.contrasena;
+
+        functions.documentoLogin(documento, contrasena, res, );
+    }, function (req, res) {
+        functions.startHome(res);
+    });
 
     app.get('/home', function (req, res) {
         functions.startHome(res);
@@ -83,7 +96,6 @@ module.exports = function (app) {
 
     app.get('/newsaloon', function (req, res) {
         functions.cargarAgregarSala(res) //Lets add a new room
-        //res.render('newsaloon'); 
     });
 
     app.post('/newsaloon', function (req, res) {
@@ -163,6 +175,35 @@ module.exports = function (app) {
         functions.listBooks(res);
     });
 
+    // app.post('/catalog', function (req, res) {
+    //     var id_libro = req.body.id_libro;
+    //     functions.modalBook(id_libro, res);
+    // });
+
+    app.get('/infobook', function(req, res) {
+        var id_libro = req.query.id_libro;
+        console.log(req.query.id_libro)
+        console.log(id_libro);
+        functions.infoBook(res, id_libro);
+        //res.render('infobook');
+    })
+
+    app.get('/newauthor', function (req, res) {
+        res.render('newauthor');
+    });
+
+    app.post('/newauthor', function (req, res) {
+        var id_autor = req.body.id_autor;
+        var nombre = req.body.nombre;
+
+        functions.agregarAutor(res, id_autor, nombre);
+    });
+
+    app.get('/users', function (req, res) {
+        functions.cargarUsuarios(res);
+    });
+
+
     app.get('/loan', function (req, res) {
         functions.chargeLoan(res); //Show all the loans
     });
@@ -192,11 +233,17 @@ module.exports = function (app) {
     });
 
     app.get('/report', function (req, res) {
-        res.render('report'); //Show the reports of books
+        functions.cargarEstadisticas(res)
+        //res.render('report'); //Show the reports of books
     });
 
     app.get('/settings', function (req, res) {
         res.render('settings'); //Lets change some options of the system
+    });
+
+    app.post('/settings', function (req, res) {
+        functions.eliminarPrestamos(res);
+        //res.render('settings'); //Lets change some options of the system
     });
 
     app.get('/search', function (req, res) {

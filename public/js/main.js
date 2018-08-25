@@ -1,6 +1,37 @@
 let id;
+let id_libro, isbn, nombre, lugar, editorial, numero_paginas, autor;
 
 $(document).ready(function () {
+
+    $(window).load(function () {
+        $(".custom-scroll-containers").mCustomScrollbar({
+            theme: "dark-thin",
+            scrollbarPosition: "inside",
+            autoHideScrollbar: true,
+            scrollButtons: {
+                enable: true
+            }
+        });
+    });
+
+    $('.pruebas').click(function () {
+
+        $.ajax({
+            type: 'GET',
+            data: JSON.stringify(),
+            contentType: 'application/json',
+            url: 'http://localhost:4001/loanreservation',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', localStorage.getItem('token'))
+            },
+            success: function (data) {
+                window.location;
+            },
+
+        });
+
+    });
+
 
     $('.tooltips-general').tooltip('hide');
 
@@ -60,6 +91,25 @@ $(document).ready(function () {
         });
     });
 
+    $('#btn-login').click(function (e) {
+        e.preventDefault();
+        alert("entro");
+        var usuario = {};
+        usuario.documento = $('#input-documento').val();
+        usuario.contrasena = $('#input-contrasena').val();
+
+        $.ajax({
+            type: 'POST',
+            data: JSON.stringify(usuario),
+            contentType: 'application/json',
+            url: 'http://localhost:4001/',
+            success: function (data) {
+                localStorage.setItem('token', data.token);
+                //alert(data.token);
+            },
+        });
+    });
+
     $('.btn-agregar-libro').click(function (e) {
         e.preventDefault();
 
@@ -78,14 +128,13 @@ $(document).ready(function () {
             data: JSON.stringify(agregarLibro),
             contentType: 'application/json',
             url: 'http://localhost:4001/newbook',
-            success:
-                swal({
-                    icon: "success",
-                    type: "success",
-                    title: 'Libro agregado correctamente'
-                }, function () {
-                    window.location.reload(true);
-                })
+            success: swal({
+                icon: "success",
+                type: "success",
+                title: 'Libro agregado correctamente'
+            }, function () {
+                window.location.reload(true);
+            })
         });
     });
 
@@ -104,14 +153,35 @@ $(document).ready(function () {
             data: JSON.stringify(agregarBiblioteca),
             contentType: 'application/json',
             url: 'http://localhost:4001/newinstitution',
-            success:
-                swal({
-                    icon: "success",
-                    type: "success",
-                    title: 'Biblioteca agregada correctamente'
-                }, function () {
-                    window.location.reload(true);
-                })
+            success: swal({
+                icon: "success",
+                type: "success",
+                title: 'Biblioteca agregada correctamente'
+            }, function () {
+                window.location.reload(true);
+            })
+        });
+    });
+
+    $('.btn-agregar-autor').click(function (e) {
+        e.preventDefault();
+
+        var autor = {};
+        autor.id_autor = $('#input-agregar-autor-id').val();
+        autor.nombre = $('#input-agregar-autor-nombre').val();
+
+        $.ajax({
+            type: 'POST',
+            data: JSON.stringify(autor),
+            contentType: 'application/json',
+            url: 'http://localhost:4001/newauthor',
+            success: swal({
+                icon: "success",
+                type: "success",
+                title: 'Autor agregado correctamente'
+            }, function () {
+                window.location.reload(true);
+            })
         });
     });
 
@@ -127,14 +197,13 @@ $(document).ready(function () {
             data: JSON.stringify(agregarCategoria),
             contentType: 'application/json',
             url: 'http://localhost:4001/newcategory',
-            success:
-                swal({
-                    icon: "success",
-                    type: "success",
-                    title: 'Categoria agregada correctamente'
-                }, function () {
-                    window.location.reload(true);
-                })
+            success: swal({
+                icon: "success",
+                type: "success",
+                title: 'Categoria agregada correctamente'
+            }, function () {
+                window.location.reload(true);
+            })
         });
     });
 
@@ -150,14 +219,13 @@ $(document).ready(function () {
             data: JSON.stringify(agregarEstante),
             contentType: 'application/json',
             url: 'http://localhost:4001/newshelf',
-            success:
-                swal({
-                    icon: "success",
-                    type: "success",
-                    title: 'Estante agregada correctamente'
-                }, function () {
-                    window.location.reload(true);
-                })
+            success: swal({
+                icon: "success",
+                type: "success",
+                title: 'Estante agregada correctamente'
+            }, function () {
+                window.location.reload(true);
+            })
         });
     });
 
@@ -174,14 +242,13 @@ $(document).ready(function () {
             data: JSON.stringify(agregarSala),
             contentType: 'application/json',
             url: 'http://localhost:4001/newsaloon',
-            success:
-                swal({
-                    icon: "success",
-                    type: "success",
-                    title: 'Sala agregada correctamente'
-                }, function () {
-                    window.location.reload(true);
-                })
+            success: swal({
+                icon: "success",
+                type: "success",
+                title: 'Sala agregada correctamente'
+            }, function () {
+                window.location.reload(true);
+            })
         });
     });
 
@@ -198,14 +265,13 @@ $(document).ready(function () {
             data: JSON.stringify(agregarEstanteCategoria),
             contentType: 'application/json',
             url: 'http://localhost:4001/newshelf-category',
-            success:
-                swal({
-                    icon: "success",
-                    type: "success",
-                    title: 'Estante - Categoria agregada correctamente'
-                }, function () {
-                    window.location.reload(true);
-                })
+            success: swal({
+                icon: "success",
+                type: "success",
+                title: 'Estante - Categoria agregada correctamente'
+            }, function () {
+                window.location.reload(true);
+            })
         });
     });
 
@@ -230,9 +296,40 @@ $(document).ready(function () {
                 data: JSON.stringify(transaccion),
                 contentType: 'application/json',
                 url: 'http://localhost:4001/loanreservation',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'))
+                },
                 success: function (data) {
                     window.location.reload(true);
                 },
+
+            });
+        });
+    });
+
+    $('.btn-eliminar-prestamos').click(function () {
+        swal({
+            title: "¿Seguro que quieres eliminar todos los prestamos?",
+            text: "Esta acción ya no se podrá deshacer, Así que piénsalo bien.",
+            type: "error",
+            showCancelButton: true,
+            confirmButtonColor: '#FF2301',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, estoy seguro',
+            cancelButtonText: "Cancelar"
+        }, function () {
+
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                url: 'http://localhost:4001/settings',
+                success: swal({
+                    icon: "success",
+                    type: "success",
+                    title: 'Todos los prestamos y reservaciones eliminados de manera correcta'
+                }, function () {
+                    window.location.reload(true)
+                })
 
             });
         });
@@ -450,6 +547,34 @@ $(document).ready(function () {
         });
     });
 
+    
+    $('.btn-informacion-libro').click(function () {
+
+        var libro = {}
+        libro.id_libro = id;
+
+        //alert(libro.id_libro)
+
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:4001/infobook',
+            data: {id_libro: id},
+            contentType: 'application/json', 
+            success: function(data){
+                $('.libros').html(data);
+            }
+        })
+
+        
+    });
+    
+    // $('.btn-informacion-libro').on('click', function () {
+    //     $('#ModalLibroInfo').modal({
+    //         show: true,
+    //         backdrop: "static"
+    //     });
+    // });
+
     $('.btn-help').on('click', function () {
         $('#ModalHelp').modal({
             show: true,
@@ -458,17 +583,16 @@ $(document).ready(function () {
     });
 });
 
-(function ($) {
-    $(window).load(function () {
-        $(".custom-scroll-containers").mCustomScrollbar({
-            theme: "dark-thin",
-            scrollbarPosition: "inside",
-            autoHideScrollbar: true,
-            scrollButtons: { enable: true }
-        });
-    });
-})(jQuery);
-
 function pasarId(idEntrante) {
     id = idEntrante;
+}
+
+function pasarInfoLibro(id_libroEntrante, isbnEntrante, nombreEntrante, lugarEntrante, editorialEntrante, numero_paginasEntrante, autorEntrante) {
+    id_libro = id_libroEntrante;
+    isbn = isbnEntrante;
+    nombre = nombreEntrante;
+    lugar = lugarEntrante;
+    editorial = editorialEntrante;
+    numero_paginas = numero_paginasEntrante;
+    autor = autorEntrante;
 }

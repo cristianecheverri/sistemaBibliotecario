@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Usuarios</title>
+
+    <% include ../partials/head %>
+
+</head>
+
+<body>
+
+    <% include ../partials/navbar-lateral %>
+
+    <div class="content-page-container full-reset custom-scroll-containers">
+
+        <% include ../partials/nav %>
+
+        <div class="container">
+            <div class="page-header">
+                <h1 class="all-tittles">Administración Usuarios</h1>
+            </div>
+        </div>
+        <div class="container-fluid" style="margin: 50px 0;">
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <img src="assets/img/user03.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
+                    Bienvenido a la sección de usuarios, en esta seccion podrás ver todos los usarios que hay registrados en el sistema.
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 lead">
+                    <ol class="breadcrumb">
+                        <li class="active">Listado de usuarios</li>
+                        <li><a href="newuser">Nuevo usuario</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <h2 class="text-center all-tittles">listado de usuarios</h2>
+
+            <%- usuarios %>
+
+        </div>
+
+        <% include ../partials/modalhelp %>
+
+        <% include ../partials/footer %>
+
+    </div>
+</body>
+
+<% include ../partials/script %>
+
+</html>

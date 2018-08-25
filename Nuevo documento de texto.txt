@@ -1,0 +1,1 @@
+SELECT COUNT(fk_usuario), fk_usuario from transaccion group by (fk_usuario) order by count desc

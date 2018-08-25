@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Libro</title>
+
+    <% include ../partials/head %>
+
+</head>
+
+<body>
+
+    <% include ../partials/navbar-lateral %>
+
+
+    <div class="content-page-container full-reset custom-scroll-containers">
+
+        <% include ../partials/nav %>
+
+        <div class="container">
+            <div class="page-header">
+              <h1 class="all-tittles">Informacion del libro</h1>
+            </div>
+        </div>
+         <div class="container-fluid"  style="margin: 40px 0;">
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <img src="assets/img/checklist.png" alt="pdf" class="img-responsive center-box" style="max-width: 110px;">
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
+                    
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            
+            <div class="libros"></div>
+           <%- libr %>
+
+        </div>
+
+        <% include ../partials/modalhelp %>
+
+        <% include ../partials/footer %>
+    </div>
+</body>
+
+<% include ../partials/script %>
+
+</html>

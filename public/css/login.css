@@ -71,7 +71,7 @@ input.material-login-control:invalid:required{
 input.material-login-control:focus ~ .bar-login:before, input.material-login-control:focus ~ .bar-login:after {
   width:50%;
 }
-.btn-login{
+#btn-login{
     background-color: transparent;
     text-align: center;
     border: none;
@@ -85,12 +85,12 @@ input.material-login-control:focus ~ .bar-login:before, input.material-login-con
     bottom: 3%;
     right: 3%;
 }
-.btn-login:hover{
+#btn-login:hover{
     border: none;
     box-shadow: none;
 }
-.btn-login:focus,
-.btn-login:active{
+#btn-login:focus,
+#btn-login:active{
     outline: none;
     border: none;
     box-shadow: none;

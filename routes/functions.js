@@ -7,13 +7,74 @@ const {
     Autor,
     Libro,
     Usuario,
-    Transaccion
+    Transaccion,
+    sequelize
 } = require('../connection');
+
+let token;
+
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const htmlCode = require('./html')
 
+var jwt = require('jsonwebtoken');
+
 var fechaHoy = new Date().getTime();
+
+exports.documentoLogin = function (documento, contrasena, res) {
+    Usuario.findAll({
+        where: {
+            documento: documento,
+            contrasena: contrasena
+        }
+    }).then((user) => {
+        if (user.length == 1) {
+            if (user.length > 0) {
+                token = jwt.sign({
+                    user
+                }, 'secret');
+
+                //res.redirect('home')
+                res.json({
+                    token: token
+                });
+            }
+        } else {
+            res.send('No existe ese usuario o la contraseña es incorrecta')
+        }
+    });
+};
+
+exports.verificar = function (req, res, next) {
+    var token = req.headers.authorization;
+    console.log(req.url);
+
+    if ((req.url !== '/')) {
+        if (!token) {
+            res.status(401).send({
+                error: "Es necesario el token de autenticación"
+            })
+            return;
+        }
+
+        jwt.verify(token, 'secret', function (err, user) {
+            if (err) {
+                res.status(401).send({
+                    error: 'Token inválido'
+                })
+            } else {
+                console.log("token valido");
+                next();
+                /*
+                res.send({
+                    message: 'Awwwww yeah!!!!'
+                })*/
+            }
+        })
+    } else {
+        next();
+    }
+}
 
 function startHome(res) {
     var cantidadAdministradores = 0;
@@ -110,7 +171,8 @@ function listBooks(res) {
                 }
             }
             res.render('catalog', {
-                libros: html
+                libros: html,
+                libro: ''
             }); //Show all the added books
         });
     });
@@ -425,9 +487,7 @@ function chargeLoanReservation(res) {
                 } else {
                     htmlLoan = '<h1 class="text-center">No hay registro de reservaciones en este momento</h1>'
                 }
-                res.render('loanreservation', {
-                    loans: htmlLoan
-                });
+                res.redirect('loanreservation');
             })
         })
     })
@@ -449,16 +509,16 @@ function accionReservacion(res, id_transaccion, accion) {
             tipo_transaccion: 'Prestamo',
             esprestado: true
         }, {
-                where: {
-                    id_transaccion: {
-                        [Op.eq]: id_transaccion
-                    }
+            where: {
+                id_transaccion: {
+                    [Op.eq]: id_transaccion
                 }
-            }).then(() => {
-                res.send();
-            }).catch((err) => {
+            }
+        }).then(() => {
+            res.send();
+        }).catch((err) => {
 
-            });
+        });
     } else {
         console.log('Algo pasa')
     }
@@ -481,16 +541,16 @@ function accionPrestamosPendientes(res, id_transaccion, accion) {
             esprestado: false,
             fecha_devolucion: new Date().getTime()
         }, {
-                where: {
-                    id_transaccion: {
-                        [Op.eq]: id_transaccion
-                    }
+            where: {
+                id_transaccion: {
+                    [Op.eq]: id_transaccion
                 }
-            }).then(() => {
-                res.send();
-            }).catch((err) => {
+            }
+        }).then(() => {
+            res.send();
+        }).catch((err) => {
 
-            });
+        });
     } else {
         console.log('Algo pasa')
     }
@@ -734,7 +794,9 @@ let cargarEstanteCategoria = (res) => {
                     }
                     tablaEstanteCategoria += `</tbody></table></div>`
                 }
-                res.render('shelf-category', { estantescategoria: tablaEstanteCategoria })
+                res.render('shelf-category', {
+                    estantescategoria: tablaEstanteCategoria
+                })
             })
         })
     })
@@ -767,12 +829,15 @@ let cargarAgregarEstanteCategoria = (res) => {
                     optioncategoria += `<option value="${category[j].id_categoria}">${category[j].nombre}</option>`;
                 }
             }
-            res.render('newshelf-category', { estante: optionestante, categoria: optioncategoria })
+            res.render('newshelf-category', {
+                estante: optionestante,
+                categoria: optioncategoria
+            })
         })
     })
 }
 
-let agregarEstanteCategoria =(res, id_estante_categoria, fk_estante, fk_categoria) => {
+let agregarEstanteCategoria = (res, id_estante_categoria, fk_estante, fk_categoria) => {
     Estante_Categoria.create({
         id_estante_categoria: id_estante_categoria,
         fk_estante: fk_estante,
@@ -784,6 +849,166 @@ let agregarEstanteCategoria =(res, id_estante_categoria, fk_estante, fk_categori
     })
 }
 
+let agregarAutor = (res, id_autor, nombre) => {
+    Autor.create({
+        id_autor: id_autor,
+        nombre: nombre
+    }).then(() => {
+
+    }).catch((err) => {
+        console.log('Err ' + err)
+    })
+}
+
+let cargarUsuarios = (res) => {
+    let tablaUsuario = htmlCode.tablaUsuario();
+    Usuario.findAll().then((users) => {
+        if (users.length > 0) {
+            users.forEach(user => {
+                tablaUsuario +=
+                    `<tr>
+                    <td>${verificarNullInformacion(user.documento)}</td>
+                    <td>${verificarNullInformacion(user.nombres)}</td>
+                    <td>${verificarNullInformacion(user.apellidos)}</td>
+                    <td>${verificarNullInformacion(user.telefono)}</td>
+                    <td>${verificarNullInformacion(user.correo)}</td>
+                    <td>${verificarNullInformacion(user.tipo_usuario)}</td>
+                    <td><button class="btn btn-success"><i class="zmdi zmdi-refresh"></i></button></td>
+                    <td><button class="btn btn-danger btn-eliminar-estante-categoria" onclick="pasarId(${user.documento})"><i class="zmdi zmdi-delete"></i></button></td>
+                </tr>`
+            });
+            tablaUsuario += `</tbody></table></div>`
+        }
+        res.render('users', {
+            usuarios: tablaUsuario
+        })
+    })
+}
+let eliminarPrestamos = (res) => {
+    Transaccion.destroy({
+        where: {
+            [Op.or]: [{
+                esprestado: true
+            }, {
+                esprestado: false
+            }]
+        }
+    }).then(() => {
+        res.send()
+    }).catch((err) => {
+        console.log('Error ' + err)
+    })
+}
+
+let cargarEstadisticas = (res) => {
+    htmlUsuario = ''
+    var htmlLibro = ''
+    var usuario;
+    var cantidadPrestamos;
+    sequelize.query("SELECT COUNT(fk_usuario), fk_usuario from transaccion group by (fk_usuario) order by count desc", {
+            type: sequelize.QueryTypes.SELECT
+        })
+        .then(transaccion => {
+            sequelize.query("SELECT COUNT(fk_libro), fk_libro from transaccion group by (fk_libro) order by count desc", {
+                    type: sequelize.QueryTypes.SELECT
+                })
+                .then(tranbook => {
+                    sequelize.query("SELECT COUNT(id_transaccion) from transaccion", {
+                            type: sequelize.QueryTypes.SELECT
+                        })
+                        .then(cantidad => {
+                            Usuario.findAll({
+                                attributes: ['documento', 'nombres', 'apellidos']
+                            }).then((users) => {
+                                usuario = users
+                                Libro.findAll().then((book) => {
+                                    Autor.findAll().then((author) => {
+                                        cantidadPrestamos = cantidad[0].count
+                                        console.log(usuario)
+                                        console.log(transaccion)
+                                        console.log(cantidad[0].count)
+                                        if (transaccion.length > 0) {
+                                            for (let i = 0; i < transaccion.length; i++) {
+                                                for (let j = 0; j < usuario.length; j++) {
+                                                    if (transaccion[i].fk_usuario == usuario[j].documento) {
+                                                        htmlUsuario += `
+                                                        <tr>
+                                                            <td>${usuario[j].nombres} ${usuario[j].apellidos}</td>
+                                                            <td>${transaccion[i].count}</td>
+                                                            <td>${Math.round((parseInt(transaccion[i].count) / parseInt(cantidad[0].count)) * 100)}%</td>
+                                                        </tr>`
+                                                    }
+                                                }
+                                            }
+
+                                            for (let i = 0; i < tranbook.length; i++) {
+                                                for (let j = 0; j < book.length; j++) {
+                                                    for (let k = 0; k < author.length; k++) {
+                                                        if (tranbook[i].fk_libro == book[j].id_libro && book[j].fk_autor == author[k].id_autor) {
+                                                            htmlLibro +=
+                                                                `<tr>
+                                                                <td>${book[j].nombre}</td>
+                                                                <td>${author[k].nombre}</td>
+                                                                <td>${tranbook[i].count}</td>
+                                                                <td>${Math.round((parseInt(tranbook[i].count) / parseInt(cantidad[0].count)) * 100)}%</td>
+                                                            </tr>`
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        res.render('report', {
+                                            usuarios: htmlUsuario,
+                                            libros: htmlLibro,
+                                            numeroPrestamos: cantidadPrestamos
+                                        })
+                                        // We don't need spread here, since only the results will be returned for select queries
+                                    })
+                                })
+                            })
+                        })
+                })
+        })
+}
+
+let infoBook = (res, id_libro) => {
+    var libro;
+    Libro.findAll({
+        where: {
+            id_libro: id_libro
+        }
+    }).then((book) => {
+        libro = book
+        console.log(libro.length)
+        if (libro.length > 0) {
+            
+        }
+        htmlBook = `<h1>${libro.nombre}</h1>`
+
+        console.log(libro.length)
+        res.render('infobook', {
+            libr: htmlBook
+        })
+
+        /*
+        Autor.findOne({
+            where: {
+                id_autor: libro.fk_autor
+            }
+        }).then((author) => {
+            
+            
+
+        })
+        */
+    })
+}
+
+exports.infoBook = infoBook;
+exports.cargarEstadisticas = cargarEstadisticas;
+exports.eliminarPrestamos = eliminarPrestamos;
+exports.cargarUsuarios = cargarUsuarios;
+exports.agregarAutor = agregarAutor;
 exports.agregarEstanteCategoria = agregarEstanteCategoria;
 exports.cargarAgregarEstanteCategoria = cargarAgregarEstanteCategoria;
 exports.eliminarEstanteCategoria = eliminarEstanteCategoria;

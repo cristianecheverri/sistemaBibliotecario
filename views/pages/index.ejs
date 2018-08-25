@@ -19,9 +19,9 @@
             <i class="zmdi zmdi-account-circle zmdi-hc-5x"></i>
         </p>
         <h4 class="text-center all-tittles login-title">inicia sesión con tu cuenta</h4>
-        <form method="POST" action="/home">
+        <form method="" action="">
             <div class="group-material-login">
-                <input type="text" class="material-login-control" required="" maxlength="70">
+                <input type="text" class="material-login-control" id="input-documento" required="" maxlength="70">
                 <span class="highlight-login"></span>
                 <span class="bar-login"></span>
                 <label>
@@ -29,13 +29,13 @@
             </div>
             <br>
             <div class="group-material-login">
-                <input type="password" class="material-login-control" required="" maxlength="70">
+                <input type="password" class="material-login-control" id="input-contrasena" required="" maxlength="70">
                 <span class="highlight-login"></span>
                 <span class="bar-login"></span>
                 <label>
                     <i class="zmdi zmdi-lock"></i> &nbsp; Contraseña</label>
             </div>
-            <button class="btn-login" type="submit">Ingresar al sistema &nbsp;
+            <button id="btn-login" type="">Ingresar al sistema &nbsp;
                 <i class="zmdi zmdi-arrow-right"></i>
             </button>
         </form>
@@ -44,5 +44,7 @@
 
 <script src="js/jquery-1.11.2.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="js/main.js"></script>
 
 </html>

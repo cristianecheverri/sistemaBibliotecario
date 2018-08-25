@@ -83,7 +83,8 @@ module.exports = {
     Autor,
     Libro,
     Usuario,
-    Transaccion
+    Transaccion,
+    sequelize
 }
 
 // LibroModel.createBook(Libro);
